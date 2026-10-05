@@ -58,5 +58,5 @@ Respetar los prefijos de restricciones en SQL:
 - UQ_: Clave Única (UQ_Clientes_Email)
 - CK_: Restricción Check (CK_Clientes_EmailValido)
 - FK_: Clave Foránea (FK_Ventas_Clientes)
-
+- IX_: Indices (X_Usuarios_RolID) 
 Ordenar la ejecución de scripts numéricamente al realizar despliegues (01_Clientes.sql, 02_Productos.sql).

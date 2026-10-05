@@ -1,0 +1,6 @@
+-- Active: 1786735858080@@127.0.0.1@1433@ModuloVentasDB
+-- MÓDULO      : Movimiento de Inventario y Bitacora
+-- OBJETO      : TABLAS Producto , Deposito, INVENTARIO
+-- PROPÓSITO   : Almacenar los datos de los productos
+-- AUTOR       : Francisco David Medina Lourenzo 
+-- FECHA CREA  : 2026-10-02
