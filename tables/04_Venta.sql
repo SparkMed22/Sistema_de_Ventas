@@ -24,6 +24,4 @@ CREATE TABLE Venta(
 
     CONSTRAINT PK_Clientes FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
     CONSTRAINT PK_CondicionVenta FOREIGN KEY (id_condicionVenta) REFERENCES CondicionVenta(id),
-   
-
 );
