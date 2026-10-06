@@ -35,25 +35,34 @@ CREATE TABLE Producto(
     estado BIT NOT NULL DEFAULT 1,
     CONSTRAINT FK_Marcas FOREIGN KEY (marca_id) REFERENCES Marcas(id),
     CONSTRAINT FK_TiposProducto FOREIGN KEY (tipo_producto_id) REFERENCES TiposProducto(id),
-    CONSTRAINT CK_Producto_PorcentajeIVA CHECK (porcentaje_iva => 0 AND porcentaje_iva <= 100)
+    CONSTRAINT CK_Producto_PorcentajeIVA CHECK (porcentaje_iva >= 0 AND porcentaje_iva <= 100)
 );
 
 
+
+CREATE TABLE TipoDeposito (
+    id TINYINT IDENTITY(1,1) CONSTRAINT PK_TipoDeposito PRIMARY KEY,
+    nombre NVARCHAR(20) NOT NULL UNIQUE
+);
+
 -- estado: El deposito sigue funcionando 
-CREATE TABLE Deposito(
+CREATE TABLE Deposito (
     id INT IDENTITY(1,1) CONSTRAINT PK_Deposito PRIMARY KEY,
     nombre NVARCHAR(50) NOT NULL UNIQUE,
     estado BIT NOT NULL DEFAULT 1,
-    direccion  NVARCHAR(50) NOT NULL
+    idTipoDeposito TINYINT NOT NULL,
+    direccion NVARCHAR(50) NOT NULL,
+    CONSTRAINT FK_Deposito_TipoDeposito FOREIGN KEY (idTipoDeposito) REFERENCES TipoDeposito(id)
 );
+
 
 -- PK_StockDeposito: es la llave primaria
 -- stock: numeros enteros por unidad
 CREATE TABLE Inventario (
+    id INT IDENTITY(1,1) CONSTRAINT PK_Inventario PRIMARY KEY,
     deposito_id INT NOT NULL,
     producto_id int NOT NULL,
     stock INT NOT NULL DEFAULT 0,
-    CONSTRAINT PK_StockDeposito PRIMARY KEY (IdDeposito, IdProducto),
     CONSTRAINT FK_Deposito FOREIGN KEY (deposito_id) REFERENCES Deposito(id),
     CONSTRAINT FK_Producto FOREIGN KEY (producto_id) REFERENCES Producto(id),    
     CONSTRAINT CK_Stock CHECK (stock >= 0)
