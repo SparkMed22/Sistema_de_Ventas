@@ -148,4 +148,10 @@ INSERT INTO TransferenciaCabecera (fechaHora, id_dep_origen, id_dep_destino, id_
 (GETDATE(), 1, 2, 3, 2, 'Llegada de electrónicos nuevos', 1);
 
 
--- ! FALTAN LOS Triggers
+-- ! FALTAN LOS Triggers para el maejo de Inventario/STOCK
+
+
+
+
+
+INSERT INTO CondicionVenta(condicon) VALUES('CONTADO'),('CREDITO');

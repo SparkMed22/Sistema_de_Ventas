@@ -24,7 +24,7 @@ CREATE TABLE TiposProducto(
 
 CREATE TABLE Producto(
     id INT IDENTITY(1,1) CONSTRAINT PK_Productos PRIMARY KEY,
-    descripcion NVARCHAR(255) NOT NULL,
+    descripcion NVARCHAR(255) NOT NULL UNIQUE,
     es_servicio BIT NOT NULL,
     marca_id INT NULL,  
     tipo_producto_id INT NOT NULL,
