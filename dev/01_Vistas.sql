@@ -1,15 +1,8 @@
+-- Active: 1786735858080@@127.0.0.1@1433@ModuloVentasDB
 
+CREATE VIEW dbo.VistaVerFunciones AS SELECT name AS Nombre_FUNCIONES FROM sys.objects WHERE type IN ('FN', 'IF', 'TF'); 
 
-
--- * CREAR VISTAS 
-
-CREATE VIEW dbo.VistaVerFunciones
-AS
-    SELECT name AS Nombre_FUNCIONES
-    FROM sys.objects
-    WHERE type IN ('FN', 'IF', 'TF'); 
-
-
+DROP VIEW dbo.VistaVerFunciones;
 SELECT * FROM dbo.VistaVerFunciones;
 
 

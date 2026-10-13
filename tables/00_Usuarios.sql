@@ -13,6 +13,7 @@ CREATE TABLE Roles (
 
 CREATE TABLE Usuarios (
     id INT IDENTITY(1,1) PRIMARY KEY,
+    cedula VARCHAR(20) NOT NULL UNIQUE,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     rol_id INT NOT NULL,
@@ -21,3 +22,4 @@ CREATE TABLE Usuarios (
 );
 
 CREATE INDEX IX_Usuarios_RolID ON Usuarios(rol_id);
+

@@ -1,22 +1,20 @@
 -- Active: 1786735858080@@127.0.0.1@1433@ModuloVentasDB
--- PROPÓSITO   : Cargar datos por Defecto 
+-- PROPÓSITO   : Cargar datos por Defecto y TESTEAR
 -- AUTOR       : Francisco David Medina Lourenzo 
 -- FECHA CREA  : 2026-10-02
 
 -- Roles
-INSERT INTO Roles (permiso) 
-VALUES 
-    ('Administrador'),
-    ('Gerente'),
-    ('Operario');
+INSERT INTO Roles (permiso) VALUES ('Administrador'),('Gerente'),('Operario');
 
 SELECT * from Roles;
 
 -- Usuarios
-INSERT INTO Usuarios (nombre, apellido, rol_id) VALUES 
-('Carlos', 'Lopez', 3),  
-('Ana', 'Martinez', 2),  
-('Jorge', 'Ruiz', 1);    
+EXEC dbo.usp_crearUsuario '5142326','Spark', 'Med', 1;
+INSERT INTO Usuarios (cedula,nombre, apellido, rol_id) VALUES ('4569745','Ana', 'Martinez', 2);
+EXEC dbo.usp_crearUsuario '4806504','Jorge', 'Ruiz', 3;
+EXEC dbo.usp_crearUsuario '4563785','Ana', 'Mareco', 1;
+EXEC dbo.usp_deleteUsuario '4563785';
+EXEC dbo.usp_updateUsuario '5142326', 'Spark','Med',1;
 
 
 SELECT 
@@ -24,6 +22,9 @@ SELECT
     CASE u.estado WHEN 1 THEN 'Activo' ELSE 'Inactivo' END AS 'Estado',
     r.permiso AS 'Permisos'  
     FROM Usuarios u INNER JOIN Roles r ON r.id = u.rol_id;
+
+
+
 
 
 
@@ -37,6 +38,8 @@ VALUES
     ('Juan Pérez', 'Ruta 1 Km 12', '+595 971 654321', 'juan.perez+ventas@gmail.com', 0.00, 0.00),
     ('Elena Rostova', 'Av. España 890', '0982-111-222', 'elena.rostova@dominguez.org', 2500000.00, 450000.00),
     ('Esteban Quito', 'General Díaz 123', '+1 555 0192', 'equito@servicio-cliente.net', 1500000.00, 1500000.00);
+
+
 
 
 SELECT nombre AS 'Nombre del Cliente' ,telefono AS 'Numero de celular' FROM Clientes;
