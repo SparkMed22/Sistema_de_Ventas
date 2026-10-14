@@ -48,9 +48,6 @@ SELECT nombre AS 'Nombre del Cliente' ,telefono AS 'Numero de celular' FROM Clie
 
 
 
-
-
-
 INSERT INTO TipoDeposito (nombre) 
 VALUES 
     ('General'), 

@@ -15,7 +15,7 @@ DROP PROCEDURE dbo.usp_crearCliente;
 DROP PROCEDURE dbo.usp_updateCliente;
 DROP PROCEDURE dbo.usp_deleteCliente;
 
-CREATE PROCEDURE dbo.usp_creaRCliente 
+CREATE PROCEDURE dbo.usp_crearCliente 
     @cedula NVARCHAR(20),
     @nombre NVARCHAR(50), 
     @direccion NVARCHAR(70), 
