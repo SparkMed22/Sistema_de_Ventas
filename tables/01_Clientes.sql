@@ -11,8 +11,8 @@
 -- saldo  : Deuda del Cliente
 CREATE TABLE Clientes (
     id INT IDENTITY(1,1) CONSTRAINT PK_Clientes PRIMARY KEY,
+    cedula NVARCHAR(20) NOT NULL UNIQUE CONSTRAINT CK_Clientes_Cedula CHECK (LEN(TRIM(cedula)) >= 6),
     nombre NVARCHAR(50) NOT NULL CONSTRAINT CK_Clientes_Nombre CHECK (LEN(TRIM(nombre)) >= 2),
-    cedula NVARCHAR(20) NOT NULL CONSTRAINT CK_Clientes_Cedula CHECK (LEN(TRIM(cedula)) >= 6),
     direccion NVARCHAR(70) NOT NULL,
     telefono VARCHAR(20) NOT NULL 
         CONSTRAINT CK_Clientes_Telefono CHECK (LEN(telefono) >= 7 AND telefono NOT LIKE '%[^0-9 ()+-]%'),

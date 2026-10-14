@@ -31,14 +31,8 @@ BEGIN
         PRINT 'Usuario eliminado exitosamente.';
     END TRY
     BEGIN CATCH
-        IF @@TRANCOUNT > 0
-        BEGIN
-            ROLLBACK TRANSACTION;
-        END 
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
-        DECLARE @ErrorState INT = ERROR_STATE();
-        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        ;THROW;
     END CATCH
 END
 
@@ -70,10 +64,7 @@ BEGIN
         PRINT 'Usuario actualizado exitosamente.';
     END TRY
     BEGIN CATCH
-        IF @@TRANCOUNT > 0
-        BEGIN
-            ROLLBACK TRANSACTION;
-        END 
+        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
         ;THROW;
     END CATCH
 END
@@ -105,14 +96,8 @@ BEGIN
         COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
-        IF @@TRANCOUNT > 0
-        BEGIN
-            ROLLBACK TRANSACTION;
-        END 
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
-        DECLARE @ErrorState INT = ERROR_STATE();
-        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        ;THROW;
     END CATCH
 END
 

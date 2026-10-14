@@ -8,17 +8,10 @@ CREATE TRIGGER trg_BitacoraUsuarios_ai ON Usuarios
 AFTER INSERT AS
 BEGIN
     SET NOCOUNT ON;
-    
-    INSERT INTO Bitacora(id_dato, db_usuario, app_usuario, accion, tabla,datos_antes, datos_despues)
-    SELECT 
-        i.id,
-        SYSTEM_USER,
-        ISNULL(CAST(SESSION_CONTEXT(N'UsuarioApp') AS NVARCHAR(100)), 'Directo en BD'),
-        'INSERT',
-        'Usuarios',
-        NULL,
-        (SELECT i2.* FROM inserted i2 WHERE i2.id = i.id FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)
-    FROM inserted i;
+    DECLARE @id INT, @json NVARCHAR(MAX);
+    SELECT @id = id, @json = (SELECT * FROM inserted FOR JSON PATH, WITHOUT_ARRAY_WRAPPER) 
+    FROM inserted;
+    EXEC dbo.usp_RegistrarBitacora @id, 'INSERT', 'Usuarios', NULL, @json;
 END;
 
 

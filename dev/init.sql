@@ -23,29 +23,32 @@ SELECT
     r.permiso AS 'Permisos'  
     FROM Usuarios u INNER JOIN Roles r ON r.id = u.rol_id;
 
-
-
-
-
-
-
-
 -- Insertar un lote de clientes con datos válidos
-INSERT INTO Clientes (nombre, direccion, telefono, email, credito, saldo) 
-VALUES 
-    ('Carlos Gómez', 'Av. Mcal. López 1450', '+595 981 123456', 'carlos.gomez@email.com', 5000000.00, 1200000.00),
-    ('María Lucía Benítez', 'Calle Palma 452', '(021) 445-890', 'mbenitez@empresa.com.py', 10000000.00, 0.00),
-    ('Juan Pérez', 'Ruta 1 Km 12', '+595 971 654321', 'juan.perez+ventas@gmail.com', 0.00, 0.00),
-    ('Elena Rostova', 'Av. España 890', '0982-111-222', 'elena.rostova@dominguez.org', 2500000.00, 450000.00),
-    ('Esteban Quito', 'General Díaz 123', '+1 555 0192', 'equito@servicio-cliente.net', 1500000.00, 1500000.00);
-
-
-
+EXEC dbo.usp_crearCliente '2475635','Carlos Gómez', 'Av. Mcal. López 1450', '+595 981 123456', 'carlos.gomez@email.com', 5000000.00;
+EXEC dbo.usp_crearCliente '4215369','María Lucía Benítez', 'Calle Palma 452', '(021) 445-890', 'mbenitez@empresa.com.py', 10000000.00;
+INSERT INTO Clientes (cedula,nombre, direccion, telefono, email, credito)
+    VALUES ('4752359','Juan Pérez', 'Ruta 1 Km 12', '+595 971 654321', 'juan.perez+ventas@gmail.com', 0.00);
+EXEC dbo.usp_crearCliente '4156325','Elena Rostova', 'Av. España 890', '0982-111-222', 'elena.rostova@dominguez.org', 2500000.00;
+EXEC dbo.usp_crearCliente '4752369','Esteban Quito', 'General Díaz 123', '+1 555 0192', 'equito@servicio-cliente.net', 1500000.0;
 
 SELECT nombre AS 'Nombre del Cliente' ,telefono AS 'Numero de celular' FROM Clientes;
 
 
-SELECT name from sys.tables;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 INSERT INTO TipoDeposito (nombre) 

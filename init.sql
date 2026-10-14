@@ -37,8 +37,20 @@ CREATE VIEW dbo.vw_triggers
     AS SELECT name AS 'Triggers' FROM sys.Triggers;
 
 
+CREATE VIEW dbo.vw_func 
+    AS SELECT 
+            schema_name(schema_id) AS [Esquema],
+            name AS [Nombre_Funcion],
+            type_desc AS [Tipo_Funcion],
+            create_date AS [Fecha_Creacion]
+        FROM sys.objects
+        WHERE type IN ('FN', 'IF', 'TF', 'FS', 'FT')
+          AND is_ms_shipped = 0;
+
+
 -- ! USO RAPIDO DE CADA UNO 
 SELECT * FROM  dbo.vw_tables;
 SELECT * FROM dbo.vw_views;
 SELECT * FROM dbo.vw_procedures;
 SELECT * FROM dbo.vw_triggers;
+SELECT * FROM dbo.vw_func;
