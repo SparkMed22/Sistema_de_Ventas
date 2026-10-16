@@ -11,12 +11,12 @@
 -- Error 50003 = El usuario no Exsite
 
 -- ? Borrar los PROCEDURE
-DROP PROCEDURE dbo.usp_deleteUsuario;
+DROP PROCEDURE dbo.usp_borrarUsuario;
 DROP PROCEDURE dbo.usp_crearUsuario;
-DROP PROCEDURE dbo.usp_updateUsuario;
+DROP PROCEDURE dbo.usp_actualizarUsuario;
 
 
-CREATE PROCEDURE dbo.usp_deleteUsuario @cedula NVARCHAR(20) AS
+CREATE PROCEDURE dbo.usp_borrarUsuario @cedula NVARCHAR(20) AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRY
@@ -39,7 +39,7 @@ END
 GO
 
 
-CREATE PROCEDURE dbo.usp_updateUsuario  @cedula NVARCHAR(20), @nombre NVARCHAR(50), @apellido NVARCHAR(50), @rol_id INT AS
+CREATE PROCEDURE dbo.usp_actualizarUsuario  @cedula NVARCHAR(20), @nombre NVARCHAR(50), @apellido NVARCHAR(50), @rol_id INT AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRY

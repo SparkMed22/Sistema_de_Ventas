@@ -1,5 +1,3 @@
-Te lo corregí y organicé en Markdown limpio, listo para tu `README.md`. También ajusté algunos detalles técnicos: la convención de índices `IX_`, la nomenclatura de triggers para SQL Server y el formato de los encabezados SQL.
-
 # Módulo de Ventas - Base de Datos (`ModuloVentasDB`)
 
 Este repositorio contiene los scripts **DDL** (definición de estructuras) y **DML** (manipulación de datos) para la gestión de la base de datos del **Módulo de Ventas**, desarrollado en Microsoft SQL Server.

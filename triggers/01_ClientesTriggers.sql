@@ -3,9 +3,6 @@
 -- AUTOR           : Francisco David Medina Lourenzo 
 -- FECHA CREACION  : 2026-10-13
 
-
-
-
 CREATE TRIGGER trg_BitacoraClientes_ai ON Clientes
 AFTER INSERT AS
 BEGIN
@@ -15,9 +12,8 @@ BEGIN
     FROM inserted;
     EXEC dbo.usp_RegistrarBitacora @id, 'INSERT', 'Clientes', NULL, @json;
 END;
+
 GO
-
-
 
 
 CREATE TRIGGER trg_BitacoraClientes_ad ON Clientes

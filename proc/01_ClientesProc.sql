@@ -8,12 +8,12 @@
 
 -- ! CODIGO DE ERRORES
 
--- ERROR 60001 = La cedula ya pertenece a otro Cliente
--- Error 60002 = El Cliente no Exsite
+-- ERROR 50050 = La cedula ya pertenece a otro Cliente
+-- Error 50051 = El Cliente no Exsite
 
 DROP PROCEDURE dbo.usp_crearCliente;
-DROP PROCEDURE dbo.usp_updateCliente;
-DROP PROCEDURE dbo.usp_deleteCliente;
+DROP PROCEDURE dbo.usp_actualizarCliente; 
+DROP PROCEDURE dbo.usp_borrarCliente;
 
 CREATE PROCEDURE dbo.usp_crearCliente 
     @cedula NVARCHAR(20),
@@ -29,7 +29,7 @@ BEGIN
     BEGIN TRY
         IF dbo.fn_ClienteExiste(@cedula) = 1
         BEGIN
-            THROW 60001 ,'La cedula ya pertenece a otro Cliente...', 1;
+            THROW 50050 ,'La cedula ya pertenece a otro Cliente...', 1;
         END
         BEGIN TRANSACTION;
             PRINT 'Creando Cliente...';
@@ -47,7 +47,7 @@ END;
 GO
 
 
-CREATE PROCEDURE dbo.usp_updateCliente     
+CREATE PROCEDURE dbo.usp_actualizarCliente     
     @cedula NVARCHAR(20),
     @nombre NVARCHAR(50), 
     @direccion NVARCHAR(70), 
@@ -59,13 +59,8 @@ AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRY 
-        IF dbo.fn_ClienteExiste(@cedula) = 1
-        BEGIN
-            THROW 60002, 'El Cliente no Existe', 1;
-        END
-
+        IF dbo.fn_ClienteExiste(@cedula) = 1 THROW 50051, 'El Cliente no Existe', 1;
         BEGIN TRANSACTION;
-            
             UPDATE Clientes
             SET nombre = @nombre,
                 direccion = @direccion,
@@ -84,14 +79,15 @@ BEGIN
     END CATCH
 END;
 
+GO
 
-CREATE PROCEDURE dbo.usp_deleteUsuario @cedula NVARCHAR(20) AS
+CREATE PROCEDURE dbo.usp_borrarCliente @cedula NVARCHAR(20) AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRY
         IF dbo.fn_ClienteExiste(@cedula) = 1
         BEGIN
-            THROW 60002, 'El Cliente no Existe', 1;
+            THROW 50051, 'El Cliente no Existe', 1;
         END
 
         BEGIN TRANSACTION;

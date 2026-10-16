@@ -13,8 +13,8 @@ EXEC dbo.usp_crearUsuario '5142326','Spark', 'Med', 1;
 INSERT INTO Usuarios (cedula,nombre, apellido, rol_id) VALUES ('4569745','Ana', 'Martinez', 2);
 EXEC dbo.usp_crearUsuario '4806504','Jorge', 'Ruiz', 3;
 EXEC dbo.usp_crearUsuario '4563785','Ana', 'Mareco', 1;
-EXEC dbo.usp_deleteUsuario '4563785';
-EXEC dbo.usp_updateUsuario '5142326', 'Spark','Med',1;
+EXEC dbo.usp_borrarUsuario '4563785';
+EXEC  dbo.usp_actualizarUsuario '5142326', 'Spark','Med',1;
 
 
 SELECT 
@@ -35,89 +35,106 @@ SELECT nombre AS 'Nombre del Cliente' ,telefono AS 'Numero de celular' FROM Clie
 
 
 
+-- ====================================
+-- ?            PRODUCTOS 
+-- ====================================
+
+INSERT INTO Marcas (nombre) VALUES('Michelin'),('Bridgestone'),('Goodyear'),('Pirelli'),('Continental'),('Nokian'),('Bosch'),('Mann Filter'),('Castrol'),('Mobil'),('Shell'),('Valvoline');      
+INSERT INTO TiposProducto (nombre) VALUES('Neumático'),('Filtro de Aceite'),('Filtro de Aire'),('Filtro de Combustible'),('Aceite de Motor'),('Pastillas de Freno'),('Batería'),('Amortiguador'),('Bujía'),('Correa de Distribución'),('Servicio');
 
 
+EXEC dbo.usp_crearProducto @descripcion = 'Neumático 195/65 R15 91H Primacy 4', @es_servicio = 0, @tipo_producto_id = 1, @precio = 85000.00, @compra = 52000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 1;
+EXEC dbo.usp_crearProducto @descripcion = 'Neumático 205/55 R16 94V Asymetric 6', @es_servicio = 0, @tipo_producto_id = 1, @precio = 92000.00, @compra = 58000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 4;
+EXEC dbo.usp_crearProducto @descripcion = 'Neumático 225/45 R17 91Y Potenza', @es_servicio = 0, @tipo_producto_id = 1, @precio = 110000.00, @compra = 70000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 4;
+EXEC dbo.usp_crearProducto @descripcion = 'Neumático 185/60 R14 82H T005', @es_servicio = 0, @tipo_producto_id = 1, @precio = 68000.00, @compra = 42000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 5;
+EXEC dbo.usp_crearProducto @descripcion = 'Neumático 215/60 R16 99H Turanza', @es_servicio = 0, @tipo_producto_id = 1, @precio = 78000.00, @compra = 48000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 2;
+EXEC dbo.usp_crearProducto @descripcion = 'Neumático 235/35 R19 106Y XL', @es_servicio = 0, @tipo_producto_id = 1, @precio = 125000.00, @compra = 80000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 3;
+EXEC dbo.usp_crearProducto @descripcion = 'Neumático 165/70 R13 79T Hakka', @es_servicio = 0, @tipo_producto_id = 1, @precio = 55000.00, @compra = 33000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 6;
+EXEC dbo.usp_crearProducto @descripcion = 'Neumático 235/35 R13 79T Hakka', @es_servicio = 0, @tipo_producto_id = 1, @precio = 55000.00, @compra = 33000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 6;
+EXEC dbo.usp_crearProducto @descripcion = 'Aceite 5W-30 Sintético 1L Castrol Edge', @es_servicio = 0, @tipo_producto_id = 5, @precio = 8500.00, @compra = 5200.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 9;
+EXEC dbo.usp_crearProducto @descripcion = 'Aceite 10W-40 Semi-Sintético 4L Castrol Magnatec', @es_servicio = 0, @tipo_producto_id = 5, @precio = 28000.00, @compra = 17500.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 9;
+EXEC dbo.usp_crearProducto @descripcion = 'Aceite 0W-20 Sintético 1L Mobil 1', @es_servicio = 0, @tipo_producto_id = 5, @precio = 9200.00, @compra = 5800.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 10;
+EXEC dbo.usp_crearProducto @descripcion = 'Aceite 5W-30 Sintético 4L Shell Helix', @es_servicio = 0, @tipo_producto_id = 5, @precio = 32000.00, @compra = 20000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 11;
+EXEC dbo.usp_crearProducto @descripcion = 'Aceite 15W-40 Mineral 20L Mobil Delux', @es_servicio = 0, @tipo_producto_id = 5, @precio = 45000.00, @compra = 28000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 10;
+EXEC dbo.usp_crearProducto @descripcion = 'Aceite 10W-30 Semi-Sintético 1L Valvoline', @es_servicio = 0, @tipo_producto_id = 5, @precio = 7500.00, @compra = 4500.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 12;
+EXEC dbo.usp_crearProducto @descripcion = 'Filtro de Aceite W0414 Bosch', @es_servicio = 0, @tipo_producto_id = 2, @precio = 4500.00, @compra = 2200.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 7;
+EXEC dbo.usp_crearProducto @descripcion = 'Filtro de Aceite H 13/100 Mann', @es_servicio = 0, @tipo_producto_id = 2, @precio = 3800.00, @compra = 1900.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 8;
+EXEC dbo.usp_crearProducto @descripcion = 'Filtro de Aire A 31 Si Mann', @es_servicio = 0, @tipo_producto_id = 3, @precio = 5200.00, @compra = 2600.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 8;
+EXEC dbo.usp_crearProducto @descripcion = 'Filtro de Combustible W 940/1 Bosch', @es_servicio = 0, @tipo_producto_id = 4, @precio = 3500.00, @compra = 1700.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 7;
+EXEC dbo.usp_crearProducto @descripcion = 'Pastillas de Freno Delanteras Bosch', @es_servicio = 0, @tipo_producto_id = 6, @precio = 18000.00, @compra = 11000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 7;
+EXEC dbo.usp_crearProducto @descripcion = 'Batería 60Ah Bosch S4', @es_servicio = 0, @tipo_producto_id = 7, @precio = 42000.00, @compra = 26000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = 7;
+EXEC dbo.usp_crearProducto @descripcion = 'Amortiguador Delantero Bilstein B4', @es_servicio = 0, @tipo_producto_id = 8, @precio = 35000.00, @compra = 22000.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = NULL;
+EXEC dbo.usp_crearProducto @descripcion = 'Bujía Iridium NGK', @es_servicio = 0, @tipo_producto_id = 9, @precio = 3200.00, @compra = 1500.00, @pagaIVA = 1, @porcentaje_iva = 21.00, @marca_id = NULL;
+EXEC dbo.usp_crearProducto @descripcion = 'Cambio de Aceite y Filtro', @es_servicio = 1, @tipo_producto_id = 11,@precio = 15000.00, @compra = 5000.00, @pagaIVA = 0, @porcentaje_iva = 0.00, @marca_id = NULL;
+EXEC dbo.usp_crearProducto @descripcion = 'Balanceo y Alineación', @es_servicio = 1, @tipo_producto_id = 11, @precio = 12000.00, @compra = 4000.00, @pagaIVA = 0, @porcentaje_iva = 0.00, @marca_id = NULL;
+EXEC dbo.usp_crearProducto @descripcion = 'Cambio de Neumático (x4)', @es_servicio = 1, @tipo_producto_id = 11, @precio = 20000.00, @compra = 8000.00, @pagaIVA = 0, @porcentaje_iva = 0.00, @marca_id = NULL;
+EXEC dbo.usp_crearProducto @descripcion = 'Revisión de Frenos', @es_servicio = 1, @tipo_producto_id = 11, @precio = 8000.00, @compra = 3000.00, @pagaIVA = 0, @porcentaje_iva = 0.00, @marca_id = NULL;
+EXEC dbo.usp_crearProducto @descripcion = 'Carga de A/C', @es_servicio = 1, @tipo_producto_id = 11, @precio = 25000.00, @compra = 10000.00, @pagaIVA = 0, @porcentaje_iva = 0.00, @marca_id = NULL;
+EXEC dbo.usp_crearProducto @descripcion = 'Diagnóstico por Computadora', @es_servicio = 1, @tipo_producto_id = 11, @precio = 10000.00, @compra = 3000.00, @pagaIVA = 0, @porcentaje_iva = 0.00, @marca_id = NULL;
+EXEC dbo.usp_crearProducto @descripcion = 'Cambio de Batería (mano de obra)', @es_servicio = 1, @tipo_producto_id = 11, @precio = 5000.00, @compra = 1500.00, @pagaIVA = 0, @porcentaje_iva = 0.00, @marca_id = NULL;
 
 
+EXEC dbo.usp_actualizarProducto 
+    @id = 4,
+    @descripcion = 'Neumático 185/60 R14 82H T005 (Actualizado)', 
+    @es_servicio = 0, 
+    @tipo_producto_id = 1, 
+    @precio = 72000.00, 
+    @compra = 45000.00, 
+    @pagaIVA = 1, 
+    @porcentaje_iva = 21.00, 
+    @marca_id = 5,
+    @estado = 1;
 
+EXEC  dbo.usp_borrarProducto 1;
 
-
-
-
-
-
-
-
-INSERT INTO TipoDeposito (nombre) 
-VALUES 
-    ('General'), 
-    ('Ventas');
-INSERT INTO TipoDeposito (nombre) VALUES ('Almacén Central'),('Devoluciones');
-
-
-INSERT INTO Marcas (nombre) 
-VALUES 
-    ('Nike'),
-    ('Adidas'),
-    ('Samsung'),
-    ('Apple'),
-    ('Coca-Cola'),
-    ('Pepsi'),
-    ('Generic Brand');
-
--- Tipos de Producto
-INSERT INTO TiposProducto (nombre) 
-VALUES 
-    ('Ropa'),
-    ('Calzado'),
-    ('Electrónica'),
-    ('Bebidas'),
-    ('Servicio'),
-    ('Accesorios');
-
--- ==========================================
--- 2. Depósitos
--- ==========================================
--- Insertar datos en Deposito
--- Nota: idTipoDeposito corresponde al ID de la tabla TipoDeposito
--- 1 = General, 2 = Ventas, 3 = Almacén Central, 4 = Devoluciones
-
-INSERT INTO Deposito (nombre, estado, idTipoDeposito, direccion) VALUES 
-('Almacén Principal', 1, 1, 'Av. Industrial 101'),       -- Tipo General
-('Tienda Centro', 1, 2, 'Calle Principal 55'),          -- Tipo Ventas
-('Bodega Norte', 1, 3, 'Ruta 5, Km 10'),               -- Tipo Almacén Central
-('Área de Devoluciones', 1, 4, 'Entrada de Servicio 2'), -- Tipo Devoluciones
-('Tienda Online - Hub', 1, 2, 'Parque Empresarial 4'),   -- Tipo Ventas
-('Depósito Temporal', 0, 1, 'Calle Secundaria 8');      -- Estado 0 = Inactivo
-
-
-
--- Insertar datos en Producto
--- Nota: 
--- es_servicio: 1 = Sí, 0 = No
--- pagaIVA: 1 = Sí, 0 = No
--- porcentaje_iva: debe estar entre 0 y 100
-
-INSERT INTO Producto (descripcion, es_servicio, marca_id, tipo_producto_id, precio, compra, pagaIVA, porcentaje_iva, estado) 
-VALUES 
-('Smartphone Galaxy S23', 0, 3, 3, 800.00, 450.00, 1, 16.00, 1),
-('Televisor 55 Pulgadas 4K', 0, 3, 3, 600.00, 300.00, 1, 16.00, 1),
-('Zapatillas Running Nike Air', 0, 1, 2, 120.00, 50.00, 1, 16.00, 1),
-('Camiseta Deportiva Adidas', 0, 2, 1, 45.00, 20.00, 1, 16.00, 1),
-('Coca-Cola 2L', 0, 5, 4, 2.50, 1.20, 1, 16.00, 1),
-('Agua Mineral Sin Gas 1L', 0, NULL, 4, 1.00, 0.40, 0, 0.00, 1),
-('Servicio de Limpieza', 1, NULL, 5, 50.00, 10.00, 1, 16.00, 1),
-('Asesoría Técnica', 1, NULL, 5, 100.00, 20.00, 1, 16.00, 1),
-('Reparación de Celular', 1, NULL, 6, 80.00, 15.00, 1, 16.00, 1),
-('Producto Descontinuado', 0, 1, 1, 30.00, 10.00, 1, 16.00, 0);
-
-
-
-SELECT p.descripcion,p.es_servicio, m.nombre,p.precio, p.compra, p.pagaIVA, p.porcentaje_iva 
+SELECT 
+    p.descripcion,
+    p.es_servicio, 
+    m.nombre,p.precio, 
+    p.compra, 
+    p.pagaIVA, 
+    p.porcentaje_iva 
 FROM Producto p
 INNER JOIN Marcas m 
 ON m.id = p.marca_id;
 
+
+
+
+
+
+-- ====================================
+-- ?            DEPOSITO
+-- ====================================
+INSERT INTO TipoDeposito (nombre) VALUES ('Depósito general'), ('Salón de ventas');
+
+
+-- Insertar datos en Deposito
+
+
+EXEC dbo.usp_crearDeposito 'Almacén Principal','Av. Industrial 101',1;
+EXEC dbo.usp_crearDeposito 'Tienda Centro','Calle Principal 55',2;
+INSERT INTO Deposito (nombre, estado, idTipoDeposito, direccion) VALUES('Bodega Norte', 1, 1, 'Ruta 5, Km 10');
+
+--('Área de Devoluciones', 1, 4, 'Entrada de Servicio 2'), -- Tipo Devoluciones
+--('Tienda Online - Hub', 1, 2, 'Parque Empresarial 4'),   -- Tipo Ventas
+--('Depósito Temporal', 0, 1, 'Calle Secundaria 8');      -- Estado 0 = Inactivo
+
+--DELETE FROM Deposito WHERE id=1;
+
+
+SELECT d.nombre, 
+    d.direccion AS 'Ubicacion del Deposito', 
+    t.nombre AS 'Tipo de Deposito', 
+    CASE d.estado
+        WHEN 1 THEN 'Activo'
+        WHEN 0 THEN 'Inactivo'
+        ELSE 'Desconocido'
+    END AS 'Estado'
+FROM Deposito d
+INNER JOIN TipoDeposito t
+ON t.id= d.idTipoDeposito;
 
 
 
