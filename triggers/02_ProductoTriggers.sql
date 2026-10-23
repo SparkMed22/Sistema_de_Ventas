@@ -5,6 +5,7 @@
 
 
 DROP TRIGGER trg_BitacoraProducto;
+DROP TRIGGER trg_BitacoraDeposito;
 
 
 CREATE OR ALTER TRIGGER trg_BitacoraProducto
@@ -58,6 +59,10 @@ BEGIN
 END;
 GO
 
+
+-- ====================================
+-- ?            DEPOSITO
+-- ====================================
 
 CREATE OR ALTER TRIGGER trg_BitacoraDeposito
 ON Deposito

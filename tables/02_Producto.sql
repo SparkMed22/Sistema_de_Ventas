@@ -72,7 +72,6 @@ CREATE NONCLUSTERED INDEX IX_Deposito_idTipoDeposito ON Deposito(idTipoDeposito)
 
 -- PK_StockDeposito: es la llave primaria
 -- stock: numeros enteros por unidad
-
 CREATE TABLE Inventario (
     id INT IDENTITY(1,1) CONSTRAINT PK_Inventario PRIMARY KEY,
     deposito_id INT NOT NULL,

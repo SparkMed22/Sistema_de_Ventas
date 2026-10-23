@@ -100,29 +100,14 @@ INNER JOIN Marcas m
 ON m.id = p.marca_id;
 
 
-
-
-
-
 -- ====================================
 -- ?            DEPOSITO
 -- ====================================
 INSERT INTO TipoDeposito (nombre) VALUES ('Depósito general'), ('Salón de ventas');
 
-
--- Insertar datos en Deposito
-
-
 EXEC dbo.usp_crearDeposito 'Almacén Principal','Av. Industrial 101',1;
 EXEC dbo.usp_crearDeposito 'Tienda Centro','Calle Principal 55',2;
 INSERT INTO Deposito (nombre, estado, idTipoDeposito, direccion) VALUES('Bodega Norte', 1, 1, 'Ruta 5, Km 10');
-
---('Área de Devoluciones', 1, 4, 'Entrada de Servicio 2'), -- Tipo Devoluciones
---('Tienda Online - Hub', 1, 2, 'Parque Empresarial 4'),   -- Tipo Ventas
---('Depósito Temporal', 0, 1, 'Calle Secundaria 8');      -- Estado 0 = Inactivo
-
---DELETE FROM Deposito WHERE id=1;
-
 
 SELECT d.nombre, 
     d.direccion AS 'Ubicacion del Deposito', 
@@ -137,9 +122,8 @@ INNER JOIN TipoDeposito t
 ON t.id= d.idTipoDeposito;
 
 
-
 -- Insertar datos en Inventario
--- Nota: Solo productos físicos (es_servicio = 0) deben tener inventario.
+-- Solo productos físicos (es_servicio = 0) deben tener inventario.
 -- Los servicios no se almacenan, por lo que no tienen filas aquí.
 
 INSERT INTO Inventario (deposito_id, producto_id, stock) VALUES 
@@ -156,22 +140,16 @@ INSERT INTO Inventario (deposito_id, producto_id, stock) VALUES
 (1, 4, 0);    
 
 
-SELECT p.descripcion,m.nombre,p.precio, p.compra, p.pagaIVA, p.porcentaje_iva, i.stock 
-FROM Producto p
-INNER JOIN Marcas m ON m.id = p.marca_id
-INNER JOIN Inventario i ON p.id = i.producto_id;
+
+
+--INSERT INTO TransferenciaCabecera (fechaHora, id_dep_origen, id_dep_destino, id_usuario_encargado, id_usuario_autorizo, obs_operacion, estado) VALUES 
+--(GETDATE(), 1, 2, 3, 2, 'Reposición de stock de zapatillas y camisetas', 1),
+--(GETDATE(), 1, 2, 3, 2, 'Llegada de electrónicos nuevos', 1);
 
 
 
-INSERT INTO TransferenciaCabecera (fechaHora, id_dep_origen, id_dep_destino, id_usuario_encargado, id_usuario_autorizo, obs_operacion, estado) VALUES 
-(GETDATE(), 1, 2, 3, 2, 'Reposición de stock de zapatillas y camisetas', 1),
-(GETDATE(), 1, 2, 3, 2, 'Llegada de electrónicos nuevos', 1);
+SELECT * FROM Bitacora WHERE accion='INSERT' AND tabla='Producto';
 
 
 -- ! FALTAN LOS Triggers para el maejo de Inventario/STOCK
-
-
-
-
-
-INSERT INTO CondicionVenta(condicon) VALUES('CONTADO'),('CREDITO');
+--INSERT INTO CondicionVenta(condicon) VALUES('CONTADO'),('CREDITO');

@@ -129,5 +129,3 @@ BEGIN
         ;THROW;
     END CATCH
 END
-
-EXEC dbo.usp_crearDeposito 'Almacén Principal','Av. Industrial 101',1;
