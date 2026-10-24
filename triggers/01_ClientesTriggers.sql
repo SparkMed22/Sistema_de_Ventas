@@ -3,7 +3,11 @@
 -- AUTOR           : Francisco David Medina Lourenzo 
 -- FECHA CREACION  : 2026-10-13
 
-CREATE TRIGGER trg_BitacoraClientes_ai ON Clientes
+DROP TRIGGER trg_BitacoraClientes_ai;
+DROP TRIGGER trg_BitacoraClientes_ad;
+DROP TRIGGER trg_BitacoraClientes_au;
+
+CREATE OR ALTER TRIGGER trg_BitacoraClientes_ai ON Clientes
 AFTER INSERT AS
 BEGIN
     SET NOCOUNT ON;
@@ -16,7 +20,7 @@ END;
 GO
 
 
-CREATE TRIGGER trg_BitacoraClientes_ad ON Clientes
+CREATE OR ALTER TRIGGER trg_BitacoraClientes_ad ON Clientes
 AFTER DELETE AS
 BEGIN
     SET NOCOUNT ON;

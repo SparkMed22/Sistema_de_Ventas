@@ -4,9 +4,11 @@
 -- FECHA CREACION  : 2026-10-15
 
 
-DROP TRIGGER trg_BitacoraProducto;
-DROP TRIGGER trg_BitacoraDeposito;
+-- ====================================
+-- ?            PRODUCTO
+-- ====================================
 
+DROP TRIGGER trg_BitacoraProducto;
 
 CREATE OR ALTER TRIGGER trg_BitacoraProducto
 ON Producto
@@ -64,6 +66,8 @@ GO
 -- ?            DEPOSITO
 -- ====================================
 
+DROP TRIGGER trg_BitacoraDeposito;
+
 CREATE OR ALTER TRIGGER trg_BitacoraDeposito
 ON Deposito
 AFTER INSERT, UPDATE, DELETE AS
@@ -108,6 +112,63 @@ BEGIN
             ISNULL(CAST(SESSION_CONTEXT(N'UsuarioApp') AS NVARCHAR(100)), 'Directo en BD'),
             'DELETE',
             'Deposito',
+            (SELECT d.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER),
+            NULL
+        FROM deleted d;
+    END
+END;
+
+
+-- ====================================
+-- ?            INVENTARIO
+-- ====================================
+
+DROP TRIGGER trg_BitacoraInventario
+
+CREATE OR ALTER TRIGGER trg_BitacoraInventario
+ON Inventario
+AFTER INSERT, UPDATE, DELETE AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+    BEGIN
+        INSERT INTO Bitacora(id_dato, db_usuario, app_usuario, accion, tabla, datos_antes, datos_despues)
+        SELECT 
+            i.id,
+            SYSTEM_USER,
+            ISNULL(CAST(SESSION_CONTEXT(N'UsuarioApp') AS NVARCHAR(100)), 'Directo en BD'),
+            'UPDATE',
+            'Inventario',
+            (SELECT d.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER),
+            (SELECT i.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)
+        FROM inserted i
+        INNER JOIN deleted d ON i.id = d.id;
+    END
+
+    ELSE IF EXISTS (SELECT 1 FROM inserted)
+    BEGIN
+        INSERT INTO Bitacora(id_dato, db_usuario, app_usuario, accion, tabla, datos_antes, datos_despues)
+        SELECT 
+            i.id,
+            SYSTEM_USER,
+            ISNULL(CAST(SESSION_CONTEXT(N'UsuarioApp') AS NVARCHAR(100)), 'Directo en BD'),
+            'INSERT',
+            'Inventario',
+            NULL,
+            (SELECT i.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)
+        FROM inserted i;
+    END
+
+    ELSE IF EXISTS (SELECT 1 FROM deleted)
+    BEGIN
+        INSERT INTO Bitacora(id_dato, db_usuario, app_usuario, accion, tabla, datos_antes, datos_despues)
+        SELECT 
+            d.id,
+            SYSTEM_USER,
+            ISNULL(CAST(SESSION_CONTEXT(N'UsuarioApp') AS NVARCHAR(100)), 'Directo en BD'),
+            'DELETE',
+            'Inventario',
             (SELECT d.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER),
             NULL
         FROM deleted d;

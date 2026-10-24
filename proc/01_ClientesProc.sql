@@ -7,7 +7,6 @@
 
 
 -- ! CODIGO DE ERRORES
-
 -- ERROR 50050 = La cedula ya pertenece a otro Cliente
 -- Error 50051 = El Cliente no Exsite
 
@@ -15,7 +14,7 @@ DROP PROCEDURE dbo.usp_crearCliente;
 DROP PROCEDURE dbo.usp_actualizarCliente; 
 DROP PROCEDURE dbo.usp_borrarCliente;
 
-CREATE PROCEDURE dbo.usp_crearCliente 
+CREATE OR ALTER PROCEDURE dbo.usp_crearCliente 
     @cedula NVARCHAR(20),
     @nombre NVARCHAR(50), 
     @direccion NVARCHAR(70), 
@@ -25,17 +24,11 @@ CREATE PROCEDURE dbo.usp_crearCliente
 AS
 BEGIN
     SET NOCOUNT ON;
-
     BEGIN TRY
-        IF dbo.fn_ClienteExiste(@cedula) = 1
-        BEGIN
-            THROW 50050 ,'La cedula ya pertenece a otro Cliente...', 1;
-        END
+        IF dbo.fn_ClienteExiste(@cedula) = 1 THROW 50050 ,'La cedula ya pertenece a otro Cliente...', 1;
         BEGIN TRANSACTION;
-            PRINT 'Creando Cliente...';
             INSERT INTO Clientes (cedula, nombre, direccion, telefono, email, credito) 
             VALUES (@cedula, @nombre, @direccion, @telefono, @email, @credito);
-            PRINT 'Cliente Creado...';
         COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
@@ -47,7 +40,7 @@ END;
 GO
 
 
-CREATE PROCEDURE dbo.usp_actualizarCliente     
+CREATE OR ALTER PROCEDURE dbo.usp_actualizarCliente     
     @cedula NVARCHAR(20),
     @nombre NVARCHAR(50), 
     @direccion NVARCHAR(70), 
@@ -69,9 +62,7 @@ BEGIN
                 credito = @credito,
                 saldo = @saldo
             WHERE cedula = @cedula;
-
         COMMIT TRANSACTION;
-        PRINT 'Cliente actualizado con éxito.';
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
@@ -81,15 +72,11 @@ END;
 
 GO
 
-CREATE PROCEDURE dbo.usp_borrarCliente @cedula NVARCHAR(20) AS
+CREATE OR ALTER PROCEDURE dbo.usp_borrarCliente @cedula NVARCHAR(20) AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRY
-        IF dbo.fn_ClienteExiste(@cedula) = 1
-        BEGIN
-            THROW 50051, 'El Cliente no Existe', 1;
-        END
-
+        IF dbo.fn_ClienteExiste(@cedula) = 0 THROW 50051, 'El Cliente no Existe', 1;
         BEGIN TRANSACTION;
             DELETE FROM Clientes WHERE cedula=@cedula;
         COMMIT TRANSACTION;

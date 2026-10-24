@@ -1,17 +1,7 @@
 -- * FUNCION DE BLOQUE 
 -- ! Siempre deben retornar algo
 -- ! Porque una función es solo para calcular o transformar datos, no para modificarlos. Es "de solo lectura".
-CREATE FUNCTION dbo.CalcularPrecioConIVA(@pagaIVA BIT ,@porcentaje_iva DECIMAL(10,2),@Precio DECIMAL(10,2))
-RETURNS DECIMAL(10,2)
-AS
-BEGIN
-    RETURN(
-        CASE
-            WHEN @pagaIVA = 1 THEN @Precio + (@Precio * (@porcentaje_iva/100))
-            ELSE 0.00
-        END
-    );
-END;
+
 
 -- ! ELIMINAR Y COMO USAR
 --DROP FUNCTION dbo.CalcularPrecioConIVA;

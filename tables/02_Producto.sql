@@ -25,6 +25,8 @@ CREATE TABLE TiposProducto(
 -- ? compra   : Precio o costo al que el dueño del local compró el producto
 -- ? precio   : Precio de venta final al público
 -- ? estado   : Permite realizar un borrado lógico (0 = Inactivo/Descontinuado, 1 = Activo)
+-- ? tipo_producto_id : tipo_producto_id = 1 es un servicio
+-- ? es_servicio : Permite identificar Servicios y productos (1 = Servicio, 0 = No es un servicio)
 CREATE TABLE Producto(
     id INT IDENTITY(1,1) CONSTRAINT PK_Productos PRIMARY KEY,
     descripcion NVARCHAR(255) NOT NULL,
@@ -45,6 +47,8 @@ CREATE TABLE Producto(
 CREATE NONCLUSTERED INDEX IX_Producto_marca_id ON Producto(marca_id);
 CREATE NONCLUSTERED INDEX IX_Producto_tipo_producto_id ON Producto(tipo_producto_id);
 CREATE NONCLUSTERED INDEX IX_Producto_estado ON Producto(estado);
+
+
 
 
 
@@ -70,6 +74,10 @@ CREATE TABLE Deposito (
 CREATE NONCLUSTERED INDEX IX_Deposito_idTipoDeposito ON Deposito(idTipoDeposito);
 
 
+
+-- ====================================
+-- ?            INVENTARIO
+-- ====================================
 -- PK_StockDeposito: es la llave primaria
 -- stock: numeros enteros por unidad
 CREATE TABLE Inventario (

@@ -16,19 +16,36 @@ DROP PROCEDURE dbo.usp_crearUsuario;
 DROP PROCEDURE dbo.usp_actualizarUsuario;
 
 
-CREATE PROCEDURE dbo.usp_borrarUsuario @cedula NVARCHAR(20) AS
+CREATE OR ALTER PROCEDURE dbo.usp_crearUsuario @cedula NVARCHAR(20),@nombre NVARCHAR(50),@apellido NVARCHAR(50),@rol_id INT AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRY
-        IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE cedula=@cedula)
-        BEGIN
-            THROW 50003, 'El Usuario no existe...', 1;
-        END
+        IF NOT EXISTS (SELECT 1 FROM Roles WHERE id=@rol_id) THROW 50001, 'EL ROL NO ES VALIDO', 1;
+        IF EXISTS (SELECT 1 FROM Usuarios  WHERE cedula=@cedula) THROW 50002, 'La cedula ya pertenece a otro Usuario', 1;
+        
+        BEGIN TRANSACTION;
+            INSERT INTO Usuarios (cedula,nombre, apellido, rol_id) 
+            VALUES (@cedula,@nombre, @apellido, @rol_id)
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        ;THROW;
+    END CATCH
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE dbo.usp_borrarUsuario @cedula NVARCHAR(20) AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRY
+        IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE cedula=@cedula) THROW 50003, 'El Usuario no existe...', 1;
+    
 
         BEGIN TRANSACTION;
             DELETE FROM Usuarios WHERE cedula=@cedula;
         COMMIT TRANSACTION;
-        PRINT 'Usuario eliminado exitosamente.';
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
@@ -39,20 +56,13 @@ END
 GO
 
 
-CREATE PROCEDURE dbo.usp_actualizarUsuario  @cedula NVARCHAR(20), @nombre NVARCHAR(50), @apellido NVARCHAR(50), @rol_id INT AS
+CREATE OR ALTER PROCEDURE dbo.usp_actualizarUsuario  @cedula NVARCHAR(20), @nombre NVARCHAR(50), @apellido NVARCHAR(50), @rol_id INT AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRY
-        IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE cedula = @cedula)
-        BEGIN
-            THROW 50003, 'El Usuario no existe...', 1;
-        END
-
-        IF NOT EXISTS (SELECT 1 FROM Roles WHERE id = @rol_id)
-        BEGIN
-            THROW 50001, 'EL ROL NO ES VALIDO', 1;
-        END
-
+        IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE cedula = @cedula) THROW 50003, 'El Usuario no existe...', 1;
+        IF NOT EXISTS (SELECT 1 FROM Roles WHERE id = @rol_id) THROW 50001, 'EL ROL NO ES VALIDO', 1;
+        
         BEGIN TRANSACTION;
             UPDATE Usuarios
             SET nombre = @nombre,
@@ -60,8 +70,6 @@ BEGIN
                 rol_id = @rol_id
             WHERE cedula = @cedula;
         COMMIT TRANSACTION;
-        
-        PRINT 'Usuario actualizado exitosamente.';
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
@@ -71,33 +79,4 @@ END
 
 GO
 
-CREATE PROCEDURE dbo.usp_crearUsuario @cedula NVARCHAR(20),@nombre NVARCHAR(50),@apellido NVARCHAR(50),@rol_id INT AS
-BEGIN
-    SET NOCOUNT ON;
-    BEGIN TRY
-
-        IF NOT EXISTS (SELECT 1 FROM Roles WHERE id=@rol_id)
-        BEGIN
-            PRINT 'ERROR (50001): EL ROL NO ES VALIDO';
-            THROW 50001, 'EL ROL NO ES VALIDO', 1;
-        END
-
-        IF EXISTS (SELECT 1 FROM Usuarios  WHERE cedula=@cedula)
-        BEGIN
-            PRINT 'ERROR (50002): La cedula ya pertenece a otro Usuario';
-            THROW 50002, 'La cedula ya pertenece a otro Usuario', 1;
-        END
-
-        BEGIN TRANSACTION;
-            PRINT 'CREAMOS AL USUARIO';
-            INSERT INTO Usuarios (cedula,nombre, apellido, rol_id) 
-            VALUES (@cedula,@nombre, @apellido, @rol_id)
-            PRINT 'USUARIO CREADO CON EXCITO....';
-        COMMIT TRANSACTION;
-    END TRY
-    BEGIN CATCH
-        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
-        ;THROW;
-    END CATCH
-END
 

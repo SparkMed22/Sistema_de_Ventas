@@ -6,7 +6,7 @@
 
 DROP PROCEDURE dbo.usp_RegistrarBitacora;
 
-CREATE PROCEDURE dbo.usp_RegistrarBitacora
+CREATE OR ALTER PROCEDURE dbo.usp_RegistrarBitacora
     @id_dato INT,
     @accion NVARCHAR(10),
     @tabla NVARCHAR(50),

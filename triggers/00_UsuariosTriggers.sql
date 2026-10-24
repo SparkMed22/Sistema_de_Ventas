@@ -4,7 +4,7 @@
 -- FECHA CREACION  : 2026-10-13
 
 
-CREATE TRIGGER trg_BitacoraUsuarios_ai ON Usuarios
+CREATE OR ALTER TRIGGER trg_BitacoraUsuarios_ai ON Usuarios
 AFTER INSERT AS
 BEGIN
     SET NOCOUNT ON;
@@ -15,7 +15,7 @@ BEGIN
 END;
 
 
-CREATE TRIGGER trg_BitacoraUsuarios_ad ON Usuarios
+CREATE OR ALTER TRIGGER trg_BitacoraUsuarios_ad ON Usuarios
 AFTER DELETE AS
 BEGIN
     SET NOCOUNT ON;
