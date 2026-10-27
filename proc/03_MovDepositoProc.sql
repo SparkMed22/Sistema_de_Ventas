@@ -62,34 +62,43 @@ CREATE OR ALTER PROCEDURE dbo.usp_crearTransferenciaDepositoDetalle
     @id_TransferenciaCabeceraDesposito INT,
     @id_producto INT,
     @cantidad INT AS
+
 BEGIN
     SET NOCOUNT ON;
-        BEGIN TRY
-            DECLARE @id_dep_origen INT, @id_dep_destino INT, @estadoTransferencia BIT;
-            SELECT 
-                @id_dep_origen = id_dep_origen,
-                @id_dep_destino = id_dep_destino,
-                @estadoTransferencia = estado
-            FROM TransferenciaCabeceraDesposito 
-            WHERE id = @id_TransferenciaCabeceraDesposito;
-            
-            IF @@ROWCOUNT = 0 THROW 50126, 'Cabecera Transferencia Invalida', 1;
-            IF @estadoTransferencia = 0 THROW 50128, 'La transferencia se encuentra anulada o inactiva', 1;
+    SET XACT_ABORT ON;
+    BEGIN TRY
+        DECLARE @id_dep_origen INT, @id_dep_destino INT, @estadoTransferencia BIT;
 
-            BEGIN TRANSACTION;
-                EXEC dbo.usp_restarInventario 
-                    @deposito_id = @id_dep_origen, 
-                    @producto_id = @id_producto, 
-                    @stock = @cantidad;
-            
-                EXEC dbo.usp_agregarInventario 
-                    @deposito_id = @id_dep_destino, 
-                    @producto_id = @id_producto, 
-                    @stock = @cantidad;
-            COMMIT TRANSACTION;
-        END TRY
+        SELECT
+            @id_dep_origen = id_dep_origen,
+            @id_dep_destino = id_dep_destino,
+            @estadoTransferencia = estado
+        FROM dbo.TransferenciaCabeceraDesposito
+        WHERE id = @id_TransferenciaCabeceraDesposito;
+
+        IF @@ROWCOUNT = 0
+            THROW 50126, 'Cabecera Transferencia Invalida', 1;
+
+        IF ISNULL(@estadoTransferencia, 0) = 0
+            THROW 50128, 'La transferencia se encuentra anulada o inactiva', 1;
+
+        BEGIN TRANSACTION;
+
+            EXEC dbo.usp_restarInventario
+                @deposito_id = @id_dep_origen,
+                @producto_id = @id_producto,
+                @stock = @cantidad;
+
+            EXEC dbo.usp_agregarInventario
+                @deposito_id = @id_dep_destino,
+                @producto_id = @id_producto,
+                @stock = @cantidad;
+            INSERT INTO dbo.TransferenciaDetalleDesposito(id_TransferenciaCabeceraDesposito,id_producto,cantidad)
+            VALUES(@id_TransferenciaCabeceraDesposito,@id_producto,@cantidad);
+        COMMIT TRANSACTION;
+    END TRY
     BEGIN CATCH
-        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
-        ;THROW;
-    END CATCH 
-END 
+        IF XACT_STATE() <> 0 ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH;
+END;

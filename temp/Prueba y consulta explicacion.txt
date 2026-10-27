@@ -1,0 +1,31 @@
+Armé 06_DatosPrueba_y_Consultas.sql con tres partes: tablas corregidas, datos de prueba y las consultas. Elegí una consulta de cada nivel: ventas por fecha y depósito (1), facturas pendientes de pago (2) y productos no vendidos en un rango (3). Si preferís otras, las armo con los mismos datos. No pude ejecutarlo contra SQL Server, así que conviene probarlo antes de entregarlo.
+
+Por qué tuve que corregir tablas
+
+04_Venta.sql no compilaba: faltaba una coma después de fecha_venta y el nombre PK_Clientes ya lo usa la tabla Clientes. Además, Venta no tenía id_deposito, y sin eso la consulta 1 no se puede resolver. Agregué esa columna y la tabla VentaDetalle, que no existía.
+05_Cobro.sql estaba en sintaxis MySQL (AUTO_INCREMENT, un REFERENCES sin tabla). Lo pasé a T-SQL conservando tus nombres y apuntando el FK a Venta(id).
+Agregué la vista vw_VentaTotal (subtotal, IVA y total por factura), que usan las consultas. El precio_unitario es sin IVA, igual que Producto.precio.
+
+Datos de prueba
+
+Son 13 facturas entre el 02/09 y el 20/10/2026, repartidas en los 3 depósitos y los 5 clientes.
+Las facturas al contado están cobradas al 100%.
+De las facturas a crédito, una está pagada completa, dos tienen pago parcial y tres no tienen pagos.
+Hay dos ventas el mismo día en el mismo depósito (20/10, depósito 2), para ver el GROUP BY funcionando.
+
+Qué devuelven las consultas
+
+Consulta 1: usa @desde y @hasta (ambas incluidas) y muestra fecha, código y nombre del depósito e importe total.
+Consulta 2: el saldo es el total de la factura menos lo aplicado en Cobro_factura, y solo salen las que tienen saldo mayor a 0.
+Consulta 3: la última fecha de venta es la histórica, y queda en NULL si nunca se vendió. Incluye servicios.
+
+Errores en tus scripts que encontré
+
+En init_240027.sql, usp_borrarProducto 1 borra el producto 1 y después el INSERT INTO Inventario lo referencia, lo que da error de FK. Sacá esa línea o el insert del producto 1. Mis datos de prueba no usan el producto 1.
+El inventario repite (depósito 1, producto 4) dos veces, y no hay UNIQUE (deposito_id, producto_id) que lo impida.
+En usp_actualizarCliente y usp_borrarCliente, la condición está invertida: fn_ClienteExiste = 1 lanza “no existe”. Debería ser = 0.
+En usp_actualizarProducto hay pagaIVA = pagaIVA, que debería ser = @pagaIVA.
+CalcularPrecioConIVA devuelve 0 cuando el producto no paga IVA. Debería devolver @Precio.
+00_Permisos.sql usa nombres que no existen (VentaCabecera, CobroCabecera, etc.), así que va a fallar.
+
+Los triggers de stock siguen pendientes, como anotaste en init_240027.sql, así que las ventas de prueba no descuentan inventario.

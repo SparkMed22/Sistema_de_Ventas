@@ -293,6 +293,8 @@ EXEC dbo.usp_restarInventario 7,2,6;
 SELECT * FROM Inventario;
 
 SELECT * FROM Bitacora WHERE tabla='Inventario';
+
+-- ? Stocks de productos. (1)
 SELECT * FROM dbo.vw_inventario;
 
 
@@ -306,8 +308,8 @@ DROP TABLE TransferenciaCabeceraDesposito;
 DECLARE @nuevoId INT;
 
 EXEC dbo.usp_crearTransferenciaDeposito
-    @id_dep_origen = 2,
-    @id_dep_destino = 7,
+    @id_dep_origen = 7,
+    @id_dep_destino = 2,
     @id_usuario_encargado = 2,
     @id_usuario_autorizo = 6,
     @obs_operacion = 'Prueba de transferencia',
@@ -319,6 +321,14 @@ GO
 SELECT * FROM TransferenciaCabeceraDesposito;
 GO
 
-EXEC dbo.usp_crearTransferenciaDepositoDetalle @id_TransferenciaCabeceraDesposito = 1, @id_producto = 2, @cantidad = 5;
+EXEC dbo.usp_crearTransferenciaDepositoDetalle @id_TransferenciaCabeceraDesposito = 2, @id_producto = 2, @cantidad = 5;
 
 SELECT * FROM Bitacora WHERE tabla='TransferenciaCabeceraDesposito';
+
+
+
+-- ====================================
+-- ?            VENTA 
+-- ====================================
+
+INSERT INTO CondicionVenta(condicon) VALUES('CONTADO'),('CREDITO');
