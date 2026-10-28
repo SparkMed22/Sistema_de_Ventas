@@ -21,29 +21,29 @@ CREATE TABLE TiposProducto(
     nombre NVARCHAR(50) NOT NULL UNIQUE
 );
 
+-- ? es_servicio = 0: Es producto físico (neumático, filtro), 1: Es servicio/mano de obra
 -- ? marca_id : Marca del producto (puede ser NULL en caso de ser un servicio)
--- ? compra   : Precio o costo al que el dueño del local compró el producto
--- ? precio   : Precio de venta final al público
+-- ? precio_venta   : Precio o costo al que el dueño del local compró el producto
+-- ? precio_compra   : Precio de venta final al público
 -- ? estado   : Permite realizar un borrado lógico (0 = Inactivo/Descontinuado, 1 = Activo)
 -- ? tipo_producto_id : tipo_producto_id = 1 es un servicio
--- ? es_servicio : Permite identificar Servicios y productos (1 = Servicio, 0 = No es un servicio)
 CREATE TABLE Producto(
     id INT IDENTITY(1,1) CONSTRAINT PK_Productos PRIMARY KEY,
     descripcion NVARCHAR(255) NOT NULL,
-    es_servicio BIT NOT NULL,
-    marca_id INT NULL,  
+    es_servicio BIT NOT NULL DEFAULT 0,
+    marca_id INT NULL,
     tipo_producto_id INT NOT NULL,
-    precio DECIMAL(18, 2) NOT NULL DEFAULT 0.00,
-    compra DECIMAL(18, 2) NOT NULL DEFAULT 0.00,
+    precio_venta DECIMAL(18, 2) NOT NULL DEFAULT 0.00,
+    precio_compra DECIMAL(18, 2) NOT NULL DEFAULT 0.00, 
     pagaIVA BIT NOT NULL DEFAULT 1,
-    porcentaje_iva DECIMAL(18,2) NOT NULL DEFAULT 0.00,
+    porcentaje_iva DECIMAL(18,2) NOT NULL DEFAULT 10.00, 
     estado BIT NOT NULL DEFAULT 1,
     CONSTRAINT FK_Marcas FOREIGN KEY (marca_id) REFERENCES Marcas(id),
     CONSTRAINT FK_TiposProducto FOREIGN KEY (tipo_producto_id) REFERENCES TiposProducto(id),
+    CONSTRAINT CK_Producto_PreciosPositivos CHECK (precio_venta >= 0 AND precio_compra >= 0),
     CONSTRAINT CK_Producto_PorcentajeIVA CHECK (porcentaje_iva >= 0 AND porcentaje_iva <= 100),
-    CONSTRAINT CK_Producto_PreciosPositivos CHECK (precio >= 0 AND compra >= 0)
+    CONSTRAINT CK_Producto_IVA_Coherencia CHECK ((pagaIVA = 0 AND porcentaje_iva = 0) OR (pagaIVA = 1 AND porcentaje_iva > 0))
 );
-
 CREATE NONCLUSTERED INDEX IX_Producto_marca_id ON Producto(marca_id);
 CREATE NONCLUSTERED INDEX IX_Producto_tipo_producto_id ON Producto(tipo_producto_id);
 CREATE NONCLUSTERED INDEX IX_Producto_estado ON Producto(estado);
@@ -64,6 +64,7 @@ CREATE TABLE TipoDeposito (
 -- estado: El deposito sigue funcionando 
 CREATE TABLE Deposito (
     id INT IDENTITY(1,1) CONSTRAINT PK_Deposito PRIMARY KEY,
+    codigo_establecimiento NVARCHAR(3) NOT NULL UNIQUE,
     nombre NVARCHAR(50) NOT NULL UNIQUE,
     direccion NVARCHAR(150) NOT NULL, 
     idTipoDeposito TINYINT NOT NULL,

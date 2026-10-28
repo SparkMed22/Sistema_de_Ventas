@@ -11,3 +11,10 @@ BEGIN
     IF EXISTS (SELECT 1 FROM Clientes WHERE cedula=@cedula) RETURN 1; 
     RETURN 0;
 END
+
+CREATE OR ALTER FUNCTION dbo.fn_ClienteExisteID(@id INT)
+RETURNS BIT AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM Clientes WHERE id=@id) RETURN 1; 
+    RETURN 0;
+END

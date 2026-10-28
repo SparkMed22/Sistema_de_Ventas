@@ -19,14 +19,14 @@ SELECT
         WHEN 1 THEN 'SI'
         ELSE 'NO'
     END AS [SERVICIO],
-    p.precio AS [PRECIO DE VENTA],
-    p.compra  AS [PRECIO DE COMPRA],
+    p.precio_venta AS [PRECIO DE VENTA],
+    p.precio_compra  AS [PRECIO DE COMPRA],
     CASE p.pagaIVA
         WHEN 1 THEN 'SI'
         ELSE 'NO' 
     END AS [PAGA IVA],
     p.porcentaje_iva AS [PORCENTAJE DE IVA],
-    dbo.fn_CalcularPrecioConIVA(pagaIVA,porcentaje_iva,precio) AS [VENTA],
+    dbo.fn_CalcularPrecioConIVA(pagaIVA,porcentaje_iva,precio_venta) AS [VENTA],
     CASE p.estado
         WHEN 1 THEN 'SI'
         ELSE 'NO' 

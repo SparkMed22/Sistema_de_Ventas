@@ -32,9 +32,20 @@ EXEC dbo.usp_crearCliente '4215369','María Lucía Benítez', 'Calle Palma 452',
 EXEC dbo.usp_crearCliente '4156325','Elena Rostova', 'Av. España 890', '0982-111-222', 'elena.rostova@dominguez.org', 2500000.00;
 EXEC dbo.usp_crearCliente '4752369','Esteban Quito', 'General Díaz 123', '+1 555 0192', 'equito@servicio-cliente.net', 1500000.0;
 EXEC dbo.usp_borrarCliente '4215369';
+
+EXEC dbo.usp_incrementarSaldoCliente @id_cliente= 1, @saldo = 1000000.00;
+
+EXEC dbo.usp_incrementarSaldoCliente @id_cliente= 3, @saldo = 1000000.00;
+
+
+EXEC dbo.usp_decrementarSaldoCliente @id_cliente= 1, @credito = 1000000;
+
+EXEC dbo.usp_decrementarSaldoCliente @id_cliente= 3, @credito = 1000000;
+
+EXEC dbo.usp_incrementarLimiteCreditoCliente @id_cliente = 3, @limite_credito = 3500000;
+
 SELECT * FROM Bitacora WHERE tabla='Clientes';
 SELECT * FROM dbo.vw_clientes;
-
 
 
 -- ================================================
@@ -71,15 +82,14 @@ INSERT INTO TiposProducto (nombre) VALUES
 
 
 
-
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Neumático 195/65 R15 91H Primacy 4', 
     @es_servicio = 0, 
     @tipo_producto_id = 2, 
-    @precio = 85000.00, 
-    @compra = 52000.00, 
+    @precio_venta = 85000.00, 
+    @precio_compra = 52000.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 2;
 
 
@@ -87,10 +97,10 @@ EXEC dbo.usp_crearProducto
     @descripcion = 'Neumático 205/55 R16 94V Asymetric 6', 
     @es_servicio = 0, 
     @tipo_producto_id = 2, 
-    @precio = 92000.00, 
-    @compra = 58000.00, 
+    @precio_venta = 92000.00, 
+    @precio_compra = 58000.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 4;
 
 
@@ -98,10 +108,10 @@ EXEC dbo.usp_crearProducto
     @descripcion = 'Neumático 225/45 R17 91Y Potenza', 
     @es_servicio = 0, 
     @tipo_producto_id = 2, 
-    @precio = 110000.00, 
-    @compra = 70000.00, 
+    @precio_venta = 110000.00, 
+    @precio_compra = 70000.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 4;
 
 
@@ -109,65 +119,65 @@ EXEC dbo.usp_crearProducto
     @descripcion = 'Aceite 5W-30 Sintético 1L Castrol Edge', 
     @es_servicio = 0, 
     @tipo_producto_id = 7, 
-    @precio = 8500.00, 
-    @compra = 5200.00, 
+    @precio_venta = 8500.00, 
+    @precio_compra = 5200.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 9;
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Aceite 10W-40 Semi-Sintético 4L Castrol Magnatec', 
     @es_servicio = 0, 
     @tipo_producto_id = 7, 
-    @precio = 28000.00, 
-    @compra = 17500.00, 
+    @precio_venta = 28000.00, 
+    @precio_compra = 17500.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 9;
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Aceite 0W-20 Sintético 1L Mobil 1', 
     @es_servicio = 0, 
     @tipo_producto_id = 7, 
-    @precio = 9200.00, 
-    @compra = 5800.00, 
+    @precio_venta = 9200.00, 
+    @precio_compra = 5800.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 10;
 
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Filtro de Aceite W0414 Bosch', 
     @es_servicio = 0, 
     @tipo_producto_id = 4, 
-    @precio = 4500.00, 
-    @compra = 2200.00, 
+    @precio_venta = 4500.00, 
+    @precio_compra = 2200.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 7;
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Filtro de Aceite H 13/100 Mann', 
     @es_servicio = 0, 
     @tipo_producto_id = 4, 
-    @precio = 3800.00, 
-    @compra = 1900.00, 
+    @precio_venta = 3800.00, 
+    @precio_compra = 1900.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 8;
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Filtro de Aire A 31 Si Mann', 
     @es_servicio = 0, 
     @tipo_producto_id = 4, 
-    @precio = 5200.00, 
-    @compra = 2600.00, 
+    @precio_venta = 5200.00, 
+    @precio_compra = 2600.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 8;
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Filtro de Combustible W 940/1 Bosch', 
     @es_servicio = 0, 
     @tipo_producto_id = 4, 
-    @precio = 3500.00, 
-    @compra = 1700.00, 
+    @precio_venta = 3500.00, 
+    @precio_compra = 1700.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 7;
 
 
@@ -177,8 +187,8 @@ EXEC dbo.usp_crearProducto
     @descripcion = 'Cambio de Aceite y Filtro', 
     @es_servicio = 1, 
     @tipo_producto_id = 1,
-    @precio = 15000.00, 
-    @compra = 5000.00, 
+    @precio_venta = 15000.00, 
+    @precio_compra = 5000.00, 
     @pagaIVA = 0, 
     @porcentaje_iva = 0.00, 
     @marca_id = NULL;
@@ -186,8 +196,8 @@ EXEC dbo.usp_crearProducto
     @descripcion = 'Balanceo y Alineación', 
     @es_servicio = 1, 
     @tipo_producto_id = 1, 
-    @precio = 12000.00, 
-    @compra = 4000.00, 
+    @precio_venta = 12000.00, 
+    @precio_compra = 4000.00, 
     @pagaIVA = 0, 
     @porcentaje_iva = 0.00, 
     @marca_id = NULL;
@@ -195,8 +205,18 @@ EXEC dbo.usp_crearProducto
     @descripcion = 'Cambio de Neumático (x4)', 
     @es_servicio = 1, 
     @tipo_producto_id = 1, 
-    @precio = 20000.00, 
-    @compra = 8000.00, 
+    @precio_venta = 20000.00, 
+    @precio_compra = 8000.00, 
+    @pagaIVA = 0, 
+    @porcentaje_iva = 0.00, 
+    @marca_id = NULL;
+
+EXEC dbo.usp_crearProducto 
+    @descripcion = 'Cambio de Aceite Caja de 4 tiempos', 
+    @es_servicio = 1, 
+    @tipo_producto_id = 1, 
+    @precio_venta = 20000.00, 
+    @precio_compra = 8000.00, 
     @pagaIVA = 0, 
     @porcentaje_iva = 0.00, 
     @marca_id = NULL;
@@ -205,8 +225,8 @@ EXEC dbo.usp_crearProducto
     @descripcion = 'Revisión de Frenos', 
     @es_servicio = 1, 
     @tipo_producto_id = 1, 
-    @precio = 8000.00, 
-    @compra = 3000.00, 
+    @precio_venta = 8000.00, 
+    @precio_compra = 3000.00, 
     @pagaIVA = 0, 
     @porcentaje_iva = 0.00, 
     @marca_id = NULL;
@@ -217,10 +237,10 @@ EXEC dbo.usp_actualizarProducto
     @descripcion = 'Neumático 185/60 R14 82H T005 (Actualizado)', 
     @es_servicio = 0, 
     @tipo_producto_id = 1, 
-    @precio = 72000.00, 
-    @compra = 45000.00, 
+    @precio_venta = 72000.00, 
+    @precio_compra = 45000.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 5,
     @estado = 1;
 
@@ -231,10 +251,10 @@ EXEC dbo.usp_actualizarProducto
     @descripcion = 'Neumático 195/65 R15 91H Primacy 4', 
     @es_servicio = 0, 
     @tipo_producto_id = 2, 
-    @precio = 85000.00, 
-    @compra = 52000.00, 
+    @precio_venta = 85000.00, 
+    @precio_compra = 52000.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 2;
 
 EXEC dbo.usp_actualizarProducto 
@@ -242,31 +262,35 @@ EXEC dbo.usp_actualizarProducto
     @descripcion = 'Neumático 205/55 R16 94V Asymetric 6', 
     @es_servicio = 0, 
     @tipo_producto_id = 2, 
-    @precio = 92000.00, 
-    @compra = 58000.00, 
+    @precio_venta = 92000.00, 
+    @precio_compra = 58000.00, 
     @pagaIVA = 1, 
-    @porcentaje_iva = 21.00, 
+    @porcentaje_iva = 10.00, 
     @marca_id = 4;
 
 EXEC  dbo.usp_borrarProducto 1;
 SELECT * FROM Bitacora WHERE tabla='Producto';
-SELECT * FROM dbo.vw_productos;
 
+SELECT * FROM dbo.vw_productos;
 
 -- ====================================
 -- ?            DEPOSITO
 -- ====================================
 INSERT INTO TipoDeposito (nombre) VALUES ('Depósito general'), ('Salón de ventas');
-EXEC dbo.usp_crearDeposito 'Almacén Principal','Av. Industrial 101',1;
-EXEC dbo.usp_crearDeposito 'Tienda Centro','Calle Principal 55',2;
-EXEC dbo.usp_crearDeposito 'Bodega Norte','Ruta 5, Km 10',1;
-EXEC dbo.usp_crearDeposito 'Bodega Norte S.A','Ruta 8, Km 10',1;
+EXEC dbo.usp_crearDeposito '101','Almacén Principal','Av. Industrial 101',1;
+EXEC dbo.usp_crearDeposito '102','Tienda Centro','Calle Principal 55',2;
+EXEC dbo.usp_crearDeposito '103','Bodega Norte','Ruta 5, Km 10',1;
+EXEC dbo.usp_crearDeposito '104','Bodega Norte S.A','Ruta 8, Km 10',1;
+
+EXEC dbo.usp_crearDeposito '205','Bodega SUR S.A','Ruta 10, Km 14',1;
+
 EXEC dbo.ups_desactivarDeposito 1;
 EXEC dbo.ups_activarDeposito 1;
 EXEC dbo.ups_borrarDeposito 4;
 
 EXEC dbo.usp_actualizarDeposito 
-    @id = 1,                              
+    @id = 1,              
+    @codigo_establecimiento = '123',                
     @nombre = 'Depósito Central Actualizado', 
     @direccion = 'Nueva Av. Principal 123', 
     @idTipoDeposito = 2,                 
@@ -284,7 +308,10 @@ SELECT * FROM dbo.vw_depositos;
 EXEC dbo.usp_agregarInventario 2,2,8;
 
 -- ! TIRA ERROR ES UN SERVICIO NO PUEDE TENER INVENTARIO
-EXEC dbo.usp_agregarInventario 2,11,10;
+EXEC dbo.usp_agregarInventario  
+    @deposito_id = 2,
+    @producto_id= 11,
+    @stock = 10;
 
 EXEC dbo.usp_agregarInventario 7,2,8;
 EXEC dbo.usp_restarInventario 7,2,6;
@@ -332,3 +359,31 @@ SELECT * FROM Bitacora WHERE tabla='TransferenciaCabeceraDesposito';
 -- ====================================
 
 INSERT INTO CondicionVenta(condicon) VALUES('CONTADO'),('CREDITO');
+
+
+DECLARE @id_factura INT;
+
+EXEC dbo.usp_crearFactura
+    @id_usuario = 1,            
+    @id_cliente = 1,           
+    @id_deposito = 7,           
+    @id_condicionVenta = 1,     
+    @fechaVencimiento = '2026-10-29', 
+    @id_factura_generada = @id_factura OUTPUT; 
+
+SELECT @id_factura AS ID_Venta_Creada;
+
+GO
+
+EXEC dbo.usp_crearDetalleFactura @id_factura = 1, @id_producto = 11, @cantidad = 4;
+
+
+
+
+
+SELECT * FROM Bitacora WHERE tabla='Ventas';
+
+SELECT * FROM Factura;
+SELECT * FROM FacturaDetalle;
+
+select * from Producto where id=11;

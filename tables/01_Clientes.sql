@@ -25,6 +25,7 @@ CREATE TABLE Clientes (
             AND email NOT LIKE ' %'          
             AND email NOT LIKE '% '          
             AND PATINDEX('%[^a-zA-Z0-9._@+-]%', email) = 0),
+    limite_credito DECIMAL(19,4) DEFAULT 0.00 CONSTRAINT CK_Clientes_Limite_Credito CHECK (limite_credito >= 0),
     credito DECIMAL(19,4) DEFAULT 0.00 CONSTRAINT CK_Clientes_Credito CHECK (credito >= 0),
     saldo DECIMAL(19,4) DEFAULT 0.00 CONSTRAINT CK_Clientes_Saldo CHECK (saldo >= 0),
     fecha_creacion DATETIME DEFAULT GETDATE()

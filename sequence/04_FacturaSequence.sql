@@ -1,0 +1,7 @@
+-- Active: 1786735858080@@127.0.0.1@1433@ModuloVentasDB
+
+CREATE SEQUENCE dbo.SeqFactura
+    AS BIGINT
+    START WITH 1
+    INCREMENT BY 1;
+GO

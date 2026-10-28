@@ -68,6 +68,24 @@ CREATE NONCLUSTERED INDEX IX_Venta_fecha ON Venta(fecha_venta);
 CREATE NONCLUSTERED INDEX IX_VentaDetalle_venta ON VentaDetalle(id_venta);
 CREATE NONCLUSTERED INDEX IX_VentaDetalle_producto ON VentaDetalle(id_producto);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- Cobros (el 05_Cobro.sql original estaba en sintaxis MySQL)
 CREATE TABLE Forma_pago(
     id_forma_pago INT IDENTITY(1,1) CONSTRAINT PK_Forma_pago PRIMARY KEY,

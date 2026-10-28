@@ -24,8 +24,8 @@ CREATE OR ALTER PROCEDURE dbo.usp_crearProducto
     @descripcion NVARCHAR(255),
     @es_servicio BIT,
     @tipo_producto_id INT,
-    @precio DECIMAL(18, 2),
-    @compra DECIMAL(18, 2),
+    @precio_venta  DECIMAL(18, 2),
+    @precio_compra DECIMAL(18, 2),
     @pagaIVA BIT,
     @porcentaje_iva DECIMAL(18,2),
     @marca_id INT = NULL
@@ -36,8 +36,8 @@ BEGIN
         IF dbo.fn_ProductoExiste(@descripcion,@marca_id) = 1 THROW 50100, 'Ya existe un producto registrado con esa misma descripción para esta marca.', 1;
         IF dbo.fn_MarcaExiste(@marca_id) = 0 THROW 50102, 'La marca especificada no existe', 1;
         IF dbo.fn_TipoProductoExiste(@tipo_producto_id) = 0 THROW 50101, 'El tipo de producto no existe', 1;
-        INSERT INTO Producto(descripcion,es_servicio,tipo_producto_id,precio,compra,pagaIVA,porcentaje_iva,marca_id)
-        VALUES (@descripcion,@es_servicio,@tipo_producto_id,@precio,@compra,@pagaIVA,@porcentaje_iva,@marca_id);
+        INSERT INTO Producto(descripcion,es_servicio,tipo_producto_id,precio_venta,precio_compra,pagaIVA,porcentaje_iva,marca_id)
+        VALUES (@descripcion,@es_servicio,@tipo_producto_id,@precio_venta,@precio_compra,@pagaIVA,@porcentaje_iva,@marca_id);
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
@@ -64,10 +64,10 @@ GO
 CREATE OR ALTER PROCEDURE dbo.usp_actualizarProducto 
     @id INT,
     @descripcion NVARCHAR(255),
-    @es_servicio BIT, s
+    @es_servicio BIT, 
     @tipo_producto_id INT,
-    @precio DECIMAL(18, 2),
-    @compra DECIMAL(18, 2),
+    @precio_venta DECIMAL(18, 2),
+    @precio_compra DECIMAL(18, 2),
     @pagaIVA BIT,
     @porcentaje_iva DECIMAL(18,2),
     @marca_id INT = NULL,
@@ -86,8 +86,8 @@ BEGIN
         SET descripcion = @descripcion,
             es_servicio = @es_servicio,
             tipo_producto_id = @tipo_producto_id,
-            precio = @precio,
-            compra = @compra,
+            precio_venta = @precio_venta,
+            precio_compra = @precio_compra,
             pagaIVA = pagaIVA,
             porcentaje_iva = @porcentaje_iva,
             marca_id = @marca_id,
@@ -119,6 +119,7 @@ DROP PROCEDURE dbo.ups_borrarDeposito;
 DROP PROCEDURE dbo.usp_actualizarDeposito;
 
 CREATE OR ALTER PROCEDURE dbo.usp_crearDeposito
+    @codigo_establecimiento NVARCHAR(3),
     @nombre NVARCHAR(50),
     @direccion NVARCHAR(150),
     @idTipoDeposito INT  AS
@@ -127,8 +128,8 @@ BEGIN
     BEGIN TRY
         IF dbo.fn_TipoDepositoExiste(@idTipoDeposito) = 0 THROW 50105, 'Gerarquia de Deposito Invalida', 1;
         BEGIN TRANSACTION;
-            INSERT INTO Deposito( nombre,direccion,idTipoDeposito)
-            VALUES( @nombre,@direccion,@idTipoDeposito);
+            INSERT INTO Deposito(codigo_establecimiento,nombre,direccion,idTipoDeposito)
+            VALUES(@codigo_establecimiento,@nombre,@direccion,@idTipoDeposito);
         COMMIT TRANSACTION;
     END TRY
 
@@ -197,6 +198,7 @@ GO
 
 CREATE OR ALTER PROCEDURE dbo.usp_actualizarDeposito 
     @id INT,
+    @codigo_establecimiento NVARCHAR(3),
     @nombre NVARCHAR(50),
     @direccion NVARCHAR(150), 
     @idTipoDeposito TINYINT,
@@ -210,6 +212,7 @@ BEGIN
         IF dbo.fn_TipoDepositoExiste(@idTipoDeposito) = 0 THROW 50105, 'Gerarquia de Deposito Invalida', 1;
 
         UPDATE Deposito SET nombre = @nombre,
+            codigo_establecimiento=@codigo_establecimiento,
             direccion = @direccion,
             idTipoDeposito = @idTipoDeposito,
             estado = @estado

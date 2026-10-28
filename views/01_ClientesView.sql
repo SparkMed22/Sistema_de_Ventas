@@ -12,6 +12,7 @@ SELECT id AS [IDENTIFICADOR],
     nombre AS [NOMBRE DEL CLIENTE],
     telefono AS [CONTACTO],
     direccion AS [UBICACION],
-    credito AS [CREDITO DISPONIBLE],
-    SALDO AS [DEUDA] 
+    limite_credito AS [LIMITE DE CREDITO],
+    credito AS [CREDITO USADO],
+    saldo AS [DEUDA ACTUAL] 
     FROM Clientes;

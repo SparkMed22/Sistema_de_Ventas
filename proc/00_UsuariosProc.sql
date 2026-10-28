@@ -40,7 +40,7 @@ CREATE OR ALTER PROCEDURE dbo.usp_borrarUsuario @cedula NVARCHAR(20) AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRY
-        IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE cedula=@cedula) THROW 50003, 'El Usuario no existe...', 1;
+        IF dbo.fn_UsuarioExisteCedula(@cedula) = 0 THROW 50003, 'El Usuario no existe...', 1;
     
 
         BEGIN TRANSACTION;
@@ -60,7 +60,7 @@ CREATE OR ALTER PROCEDURE dbo.usp_actualizarUsuario  @cedula NVARCHAR(20), @nomb
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRY
-        IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE cedula = @cedula) THROW 50003, 'El Usuario no existe...', 1;
+        IF dbo.fn_UsuarioExisteCedula(@cedula) = 0 THROW 50003, 'El Usuario no existe...', 1;
         IF NOT EXISTS (SELECT 1 FROM Roles WHERE id = @rol_id) THROW 50001, 'EL ROL NO ES VALIDO', 1;
         
         BEGIN TRANSACTION;
