@@ -16,3 +16,15 @@ SELECT id AS [IDENTIFICADOR],
     credito AS [CREDITO USADO],
     saldo AS [DEUDA ACTUAL] 
     FROM Clientes;
+
+
+CREATE OR ALTER VIEW dbo.vw_clientesCredito AS
+SELECT id AS [IDENTIFICADOR],
+    cedula AS [CEDULA],
+    nombre AS [NOMBRE DEL CLIENTE],
+    telefono AS [CONTACTO],
+    direccion AS [UBICACION],
+    limite_credito AS [LIMITE DE CREDITO],
+    credito AS [CREDITO USADO],
+    saldo AS [DEUDA ACTUAL] 
+    FROM Clientes WHERE  limite_credito > 0;

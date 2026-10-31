@@ -111,6 +111,7 @@ BEGIN
                 @precio_venta_unitario DECIMAL(18,2),
                 @pagaIVA BIT,
                 @porcentaje_iva DECIMAL(18,2),
+                @porsentaje_descuento DECIMAL(18,2),
                 @precio_venta_final_unitario DECIMAL(18,2),
                 @precio_venta_final DECIMAL(18,2);
 
@@ -161,11 +162,18 @@ BEGIN
                         WHEN 2 THEN dbo.fn_CalcularPrecioFactura(@pagaIVA, @porcentaje_iva, 5,@precio_venta_unitario)
                         ELSE @precio_venta_unitario
                     END;
+                SET @porsentaje_descuento = 
+                    CASE @id_condicionVenta 
+                        WHEN 1 THEN 10
+                        WHEN 2 THEN 5
+                        ELSE 0
+                    END;
             END
             ELSE
             BEGIN
                 SET @precio_venta_final_unitario =
                     dbo.fn_CalcularPrecioFactura(@pagaIVA, @porcentaje_iva, 0,@precio_venta_unitario);
+                SET @porsentaje_descuento = 0;
             END;
 
             IF @precio_venta_final_unitario IS NULL
@@ -191,9 +199,9 @@ BEGIN
                     @producto_id = @id_producto,
                     @stock = @cantidad;
             END;
-            INSERT INTO FacturaDetalle (id_factura,id_producto,cantidad,porcentaje_iva,precio_unitario,precio_venta)
-            VALUES(@id_factura,@id_producto,@cantidad,@porcentaje_iva,@precio_venta_final_unitario,@precio_venta_final);
-            
+            INSERT INTO FacturaDetalle (id_factura,id_producto,cantidad,porsentaje_descuento,porcentaje_iva,precio_unitario,precio_venta)
+            VALUES(@id_factura,@id_producto,@cantidad,@porsentaje_descuento,@porcentaje_iva,@precio_venta_final_unitario,@precio_venta_final);
+
             UPDATE Factura SET total = total + @precio_venta_final WHERE id = @id_factura;
 
         COMMIT TRANSACTION;

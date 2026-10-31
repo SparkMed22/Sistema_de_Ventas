@@ -31,6 +31,9 @@ EXEC dbo.usp_crearCliente '2475635','Carlos Gómez', 'Av. Mcal. López 1450', '+
 EXEC dbo.usp_crearCliente '4215369','María Lucía Benítez', 'Calle Palma 452', '(021) 445-890', 'mbenitez@empresa.com.py', 10000000.00;
 EXEC dbo.usp_crearCliente '4156325','Elena Rostova', 'Av. España 890', '0982-111-222', 'elena.rostova@dominguez.org', 2500000.00;
 EXEC dbo.usp_crearCliente '4752369','Esteban Quito', 'General Díaz 123', '+1 555 0192', 'equito@servicio-cliente.net', 1500000.0;
+
+EXEC dbo.usp_crearCliente '4153562','Aqui Tiburon', 'Calle falsa', '0984256231', 'emailfalsa@gmail.net', 00.0;
+
 EXEC dbo.usp_borrarCliente '4215369';
 
 EXEC dbo.usp_incrementarSaldoCliente @id_cliente= 1, @saldo = 1000000.00;
@@ -47,6 +50,7 @@ EXEC dbo.usp_incrementarLimiteCreditoCliente @id_cliente = 3, @limite_credito = 
 SELECT * FROM Bitacora WHERE tabla='Clientes';
 SELECT * FROM dbo.vw_clientes;
 
+SELECT * FROM dbo.vw_clientesCredito;
 
 -- ================================================
 -- ?        Marcas, Marcas, PRODUCTOS 
@@ -316,6 +320,7 @@ EXEC dbo.usp_agregarInventario
 EXEC dbo.usp_agregarInventario 7,2,8;
 EXEC dbo.usp_restarInventario 7,2,6;
 
+EXEC dbo.usp_agregarInventario @deposito_id=7,@producto_id=3,@stock=10;
 
 SELECT * FROM Inventario;
 
@@ -375,7 +380,8 @@ SELECT @id_factura AS ID_Venta_Creada;
 
 GO
 
-EXEC dbo.usp_crearDetalleFactura @id_factura = 1, @id_producto = 11, @cantidad = 4;
+EXEC dbo.usp_crearDetalleFactura @id_factura = 1, @id_producto = 11, @cantidad = 1;
+EXEC dbo.usp_crearDetalleFactura @id_factura = 1, @id_producto = 3, @cantidad = 4;
 
 
 
@@ -384,6 +390,9 @@ EXEC dbo.usp_crearDetalleFactura @id_factura = 1, @id_producto = 11, @cantidad =
 SELECT * FROM Bitacora WHERE tabla='Ventas';
 
 SELECT * FROM Factura;
+
+--DROP TABLE FacturaDetalle;
+
 SELECT * FROM FacturaDetalle;
 
 select * from Producto where id=11;
