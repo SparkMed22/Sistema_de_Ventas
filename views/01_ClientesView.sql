@@ -5,6 +5,7 @@
 
 
 DROP VIEW dbo.vw_clientes;
+DROP VIEW dbo.vw_clientesCredito;
 
 CREATE OR ALTER VIEW dbo.vw_clientes AS
 SELECT id AS [IDENTIFICADOR],

@@ -9,7 +9,6 @@
 -- ====================================
 
 INSERT INTO Roles (permiso) VALUES ('Administrador'),('Gerente'),('Operario');
-SELECT * FROM dbo.vw_roles;
 
 
 EXEC dbo.usp_crearUsuario '5142326','Spark', 'Med', 1;
@@ -18,9 +17,6 @@ EXEC dbo.usp_crearUsuario '4806504','Jorge', 'Ruiz', 3;
 EXEC dbo.usp_crearUsuario '4563785','Ana', 'Mareco', 1;
 EXEC dbo.usp_borrarUsuario '4563785';
 EXEC  dbo.usp_actualizarUsuario '5142326', 'Spark','Med',1;
-
-SELECT * FROM dbo.vw_usuarios;
-SELECT * FROM dbo.vw_roles;
 SELECT * FROM Bitacora WHERE tabla='Usuarios';
 
 
@@ -39,12 +35,8 @@ EXEC dbo.usp_borrarCliente '4215369';
 EXEC dbo.usp_incrementarSaldoCliente @id_cliente= 1, @saldo = 1000000.00;
 
 EXEC dbo.usp_incrementarSaldoCliente @id_cliente= 3, @saldo = 1000000.00;
-
-
 EXEC dbo.usp_decrementarSaldoCliente @id_cliente= 1, @credito = 1000000;
-
 EXEC dbo.usp_decrementarSaldoCliente @id_cliente= 3, @credito = 1000000;
-
 EXEC dbo.usp_incrementarLimiteCreditoCliente @id_cliente = 3, @limite_credito = 3500000;
 
 SELECT * FROM Bitacora WHERE tabla='Clientes';
@@ -61,31 +53,21 @@ INSERT INTO Marcas (nombre) VALUES
     ('Bridgestone'),
     ('Goodyear'),
     ('Pirelli'),
-    ('Continental'),
-    ('Nokian'),
-    ('Bosch'),
-    ('Mann Filter'),
-    ('Castrol'),
-    ('Mobil'),
-    ('Shell'),
-    ('Valvoline');      
+    ('Continental');
 
 
 INSERT INTO TiposProducto (nombre) VALUES
     ('Servicio'),
     ('Neumático'),
     ('Filtro de Aceite'),
-    ('Filtro de Aire'),
-    ('Filtro de Combustible'),
     ('Aceite de Motor'),
-    ('Pastillas de Freno'),
-    ('Batería'),
-    ('Amortiguador'),
-    ('Bujía'),
-    ('Correa de Distribución');
+    ('Pastillas de Freno');
 
+-- ============================================
+-- PRODUCTOS (7 en total)
+-- ============================================
 
-
+-- NEUMÁTICOS (tipo_producto_id = 2)
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Neumático 195/65 R15 91H Primacy 4', 
     @es_servicio = 0, 
@@ -94,19 +76,17 @@ EXEC dbo.usp_crearProducto
     @precio_compra = 52000.00, 
     @pagaIVA = 1, 
     @porcentaje_iva = 10.00, 
-    @marca_id = 2;
-
+    @marca_id = 1; -- Michelin
 
 EXEC dbo.usp_crearProducto 
-    @descripcion = 'Neumático 205/55 R16 94V Asymetric 6', 
+    @descripcion = 'Neumático 205/55 R16 94V Turanza', 
     @es_servicio = 0, 
     @tipo_producto_id = 2, 
     @precio_venta = 92000.00, 
     @precio_compra = 58000.00, 
     @pagaIVA = 1, 
     @porcentaje_iva = 10.00, 
-    @marca_id = 4;
-
+    @marca_id = 2; -- Bridgestone
 
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Neumático 225/45 R17 91Y Potenza', 
@@ -116,124 +96,51 @@ EXEC dbo.usp_crearProducto
     @precio_compra = 70000.00, 
     @pagaIVA = 1, 
     @porcentaje_iva = 10.00, 
-    @marca_id = 4;
+    @marca_id = 4; -- Pirelli
 
-
+-- ACEITES (tipo_producto_id = 4)
 EXEC dbo.usp_crearProducto 
-    @descripcion = 'Aceite 5W-30 Sintético 1L Castrol Edge', 
+    @descripcion = 'Aceite 5W-30 Sintético 1L Continental', 
     @es_servicio = 0, 
-    @tipo_producto_id = 7, 
+    @tipo_producto_id = 4, 
     @precio_venta = 8500.00, 
     @precio_compra = 5200.00, 
     @pagaIVA = 1, 
     @porcentaje_iva = 10.00, 
-    @marca_id = 9;
+    @marca_id = 5; -- Continental
+
 EXEC dbo.usp_crearProducto 
-    @descripcion = 'Aceite 10W-40 Semi-Sintético 4L Castrol Magnatec', 
+    @descripcion = 'Aceite 10W-40 Semi-Sintético 4L Goodyear', 
     @es_servicio = 0, 
-    @tipo_producto_id = 7, 
+    @tipo_producto_id = 4, 
     @precio_venta = 28000.00, 
     @precio_compra = 17500.00, 
     @pagaIVA = 1, 
     @porcentaje_iva = 10.00, 
-    @marca_id = 9;
-EXEC dbo.usp_crearProducto 
-    @descripcion = 'Aceite 0W-20 Sintético 1L Mobil 1', 
-    @es_servicio = 0, 
-    @tipo_producto_id = 7, 
-    @precio_venta = 9200.00, 
-    @precio_compra = 5800.00, 
-    @pagaIVA = 1, 
-    @porcentaje_iva = 10.00, 
-    @marca_id = 10;
+    @marca_id = 3; -- Goodyear
 
+-- FILTROS (tipo_producto_id = 3)
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Filtro de Aceite W0414 Bosch', 
     @es_servicio = 0, 
-    @tipo_producto_id = 4, 
+    @tipo_producto_id = 3, 
     @precio_venta = 4500.00, 
     @precio_compra = 2200.00, 
     @pagaIVA = 1, 
     @porcentaje_iva = 10.00, 
-    @marca_id = 7;
-EXEC dbo.usp_crearProducto 
-    @descripcion = 'Filtro de Aceite H 13/100 Mann', 
-    @es_servicio = 0, 
-    @tipo_producto_id = 4, 
-    @precio_venta = 3800.00, 
-    @precio_compra = 1900.00, 
-    @pagaIVA = 1, 
-    @porcentaje_iva = 10.00, 
-    @marca_id = 8;
-EXEC dbo.usp_crearProducto 
-    @descripcion = 'Filtro de Aire A 31 Si Mann', 
-    @es_servicio = 0, 
-    @tipo_producto_id = 4, 
-    @precio_venta = 5200.00, 
-    @precio_compra = 2600.00, 
-    @pagaIVA = 1, 
-    @porcentaje_iva = 10.00, 
-    @marca_id = 8;
-EXEC dbo.usp_crearProducto 
-    @descripcion = 'Filtro de Combustible W 940/1 Bosch', 
-    @es_servicio = 0, 
-    @tipo_producto_id = 4, 
-    @precio_venta = 3500.00, 
-    @precio_compra = 1700.00, 
-    @pagaIVA = 1, 
-    @porcentaje_iva = 10.00, 
-    @marca_id = 7;
+    @marca_id = 1; -- Michelin (ajustado por disponibilidad)
 
-
-
-
+-- SERVICIOS (tipo_producto_id = 1)
 EXEC dbo.usp_crearProducto 
     @descripcion = 'Cambio de Aceite y Filtro', 
     @es_servicio = 1, 
-    @tipo_producto_id = 1,
+    @tipo_producto_id = 1, 
     @precio_venta = 15000.00, 
     @precio_compra = 5000.00, 
     @pagaIVA = 0, 
     @porcentaje_iva = 0.00, 
     @marca_id = NULL;
-EXEC dbo.usp_crearProducto 
-    @descripcion = 'Balanceo y Alineación', 
-    @es_servicio = 1, 
-    @tipo_producto_id = 1, 
-    @precio_venta = 12000.00, 
-    @precio_compra = 4000.00, 
-    @pagaIVA = 0, 
-    @porcentaje_iva = 0.00, 
-    @marca_id = NULL;
-EXEC dbo.usp_crearProducto 
-    @descripcion = 'Cambio de Neumático (x4)', 
-    @es_servicio = 1, 
-    @tipo_producto_id = 1, 
-    @precio_venta = 20000.00, 
-    @precio_compra = 8000.00, 
-    @pagaIVA = 0, 
-    @porcentaje_iva = 0.00, 
-    @marca_id = NULL;
 
-EXEC dbo.usp_crearProducto 
-    @descripcion = 'Cambio de Aceite Caja de 4 tiempos', 
-    @es_servicio = 1, 
-    @tipo_producto_id = 1, 
-    @precio_venta = 20000.00, 
-    @precio_compra = 8000.00, 
-    @pagaIVA = 0, 
-    @porcentaje_iva = 0.00, 
-    @marca_id = NULL;
-
-EXEC dbo.usp_crearProducto 
-    @descripcion = 'Revisión de Frenos', 
-    @es_servicio = 1, 
-    @tipo_producto_id = 1, 
-    @precio_venta = 8000.00, 
-    @precio_compra = 3000.00, 
-    @pagaIVA = 0, 
-    @porcentaje_iva = 0.00, 
-    @marca_id = NULL;
 
 
 EXEC dbo.usp_actualizarProducto 
@@ -275,7 +182,7 @@ EXEC dbo.usp_actualizarProducto
 EXEC  dbo.usp_borrarProducto 1;
 SELECT * FROM Bitacora WHERE tabla='Producto';
 
-SELECT * FROM dbo.vw_productos;
+
 
 -- ====================================
 -- ?            DEPOSITO
