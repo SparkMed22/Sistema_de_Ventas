@@ -4,12 +4,14 @@
 -- AUTOR       : Francisco David Medina Lourenzo 
 -- FECHA CREACION  : 2026-10-23
 
-
--- ? BORRAR LAS VIEWS
+-- ! BORRAR LAS VIEWS
 DROP VIEW dbo.vw_usuarios;
 DROP VIEW dbo.vw_roles;
 
 
+-- ====================================
+-- ?            USUARIOS
+-- ====================================
 
 CREATE OR ALTER VIEW dbo.vw_usuarios AS
 SELECT 
@@ -24,15 +26,11 @@ SELECT
     FROM Usuarios u
     INNER JOIN Roles r ON r.id = u.rol_id;
 
+-- ====================================
+-- ?            ROLES
+-- ====================================
 
 CREATE OR ALTER VIEW dbo.vw_roles AS 
 SELECT id AS [IDENTIFICADOR],
     permiso AS [PERMISO],
-    fecha_creacion AS [CREADO EN FECHA]FROM Roles;
-
-
-
-
-
-
-
+    fecha_creacion AS [CREADO EN FECHA] FROM Roles;

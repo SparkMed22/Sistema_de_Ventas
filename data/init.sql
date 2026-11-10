@@ -1,7 +1,7 @@
 -- Active: 1786735858080@@127.0.0.1@1433@ModuloVentasDB
 -- PROPÓSITO   : Cargar datos por Defecto y TESTEAR
 -- AUTOR       : Francisco David Medina Lourenzo 
--- FECHA CREA  : 2026-10-02
+-- Fecha Creacion  : 2026-10-02
 
 
 -- ====================================
@@ -18,6 +18,16 @@ EXEC dbo.usp_crearUsuario '4563785','Ana', 'Mareco', 1;
 EXEC dbo.usp_borrarUsuario '4563785';
 EXEC  dbo.usp_actualizarUsuario '5142326', 'Spark','Med',1;
 SELECT * FROM Bitacora WHERE tabla='Usuarios';
+
+
+
+
+
+
+
+
+
+
 
 
 -- ====================================
@@ -229,7 +239,40 @@ EXEC dbo.usp_restarInventario 7,2,6;
 
 EXEC dbo.usp_agregarInventario @deposito_id=7,@producto_id=3,@stock=10;
 
-SELECT * FROM Inventario;
+-- ALMACÉN PRINCIPAL (ID = 1)
+EXEC dbo.usp_agregarInventario 1, 1, 20;
+EXEC dbo.usp_agregarInventario 1, 2, 15;
+EXEC dbo.usp_agregarInventario 1, 3, 12;
+EXEC dbo.usp_agregarInventario 1, 4, 30;
+EXEC dbo.usp_agregarInventario 1, 5, 25;
+EXEC dbo.usp_agregarInventario 1, 6, 40;
+
+
+-- TIENDA CENTRO (ID = 2)
+EXEC dbo.usp_agregarInventario 2, 1, 8;
+EXEC dbo.usp_agregarInventario 2, 2, 10;
+EXEC dbo.usp_agregarInventario 2, 3, 6;
+EXEC dbo.usp_agregarInventario 2, 4, 15;
+EXEC dbo.usp_agregarInventario 2, 5, 12;
+EXEC dbo.usp_agregarInventario 2, 6, 20;
+
+
+-- BODEGA NORTE (ID = 3)
+EXEC dbo.usp_agregarInventario 3, 1, 15;
+EXEC dbo.usp_agregarInventario 3, 2, 12;
+EXEC dbo.usp_agregarInventario 3, 3, 10;
+EXEC dbo.usp_agregarInventario 3, 4, 20;
+EXEC dbo.usp_agregarInventario 3, 5, 18;
+EXEC dbo.usp_agregarInventario 3, 6, 25;
+
+
+-- BODEGA SUR (ID = 5)
+EXEC dbo.usp_agregarInventario 5, 1, 10;
+EXEC dbo.usp_agregarInventario 5, 2, 8;
+EXEC dbo.usp_agregarInventario 5, 3, 7;
+EXEC dbo.usp_agregarInventario 5, 4, 15;
+EXEC dbo.usp_agregarInventario 5, 5, 10;
+EXEC dbo.usp_agregarInventario 5, 6, 15;
 
 SELECT * FROM Bitacora WHERE tabla='Inventario';
 
@@ -240,10 +283,6 @@ SELECT * FROM dbo.vw_inventario;
 -- ====================================
 -- ?            MOVIMOENTO DEPOSITO
 -- ====================================
-
-TRUNCATE TABLE TransferenciaCabeceraDesposito;
-DROP TABLE TransferenciaCabeceraDesposito;
-
 DECLARE @nuevoId INT;
 
 EXEC dbo.usp_crearTransferenciaDeposito

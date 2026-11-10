@@ -5,8 +5,6 @@
 -- FECHA CREACION  : 2026-10-24
 
 
-DROP FUNCTION dbo.fn_UsuarioExiste;
-DROP FUNCTION dbo.fn_UsuarioExisteCedula;
 
 CREATE OR ALTER FUNCTION dbo.fn_UsuarioExiste(@id INT)
 RETURNS BIT AS
@@ -15,9 +13,11 @@ BEGIN
     RETURN 0;
 END
 
-CREATE OR ALTER FUNCTION dbo.fn_UsuarioExisteCedula(@cedula INT)
+CREATE OR ALTER FUNCTION dbo.fn_UsuarioExisteCedula(@cedula NVARCHAR(20))
 RETURNS BIT AS
 BEGIN
-    IF EXISTS (SELECT 1 FROM Usuarios WHERE cedula=@cedula) RETURN 1; 
+    IF EXISTS (SELECT 1 FROM Usuarios WHERE cedula = @cedula) 
+        RETURN 1; 
     RETURN 0;
 END
+GO
